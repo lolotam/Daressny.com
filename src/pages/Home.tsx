@@ -9,6 +9,7 @@ import { Navbar } from '@/components/Navbar';
 import { NewsletterSubscription } from '@/components/NewsletterSubscription';
 import { Subjects } from '@/components/Subjects';
 import { Testimonials } from '@/components/Testimonials';
+import { WelcomePopup } from '@/components/WelcomePopup';
 
 const Home = () => {
   return (
@@ -25,6 +26,7 @@ const Home = () => {
         <NewsletterSubscription />
       </main>
       <Footer />
+      <WelcomePopup />
     </div>
   );
 };
