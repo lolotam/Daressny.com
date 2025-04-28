@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook, Tiktok } from 'lucide-react';
+import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 export const Navbar = () => {
@@ -23,7 +23,7 @@ export const Navbar = () => {
   const socialItems = [
     { icon: <Instagram size={18} />, url: 'https://instagram.com/daressny', label: 'Instagram' },
     { icon: <Facebook size={18} />, url: 'https://facebook.com/daressny', label: 'Facebook' },
-    { icon: <Tiktok size={18} />, url: 'https://tiktok.com/@daressny', label: 'Tiktok' },
+    { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 1 0 -6 0"/><path d="M13 12v8m-2 -8v8"/><path d="M15.09 4.111a8.82 8.82 0 0 0 -6.18 0"/><path d="M12 4v4"/><path d="M20 10c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10c1.088 0 2.134 .184 3.11 .523"/></svg>, url: 'https://tiktok.com/@daressny', label: 'TikTok' },
   ];
 
   // Check if the nav item is active

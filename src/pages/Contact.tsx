@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, Phone, MapPin, Instagram, Facebook, Tiktok, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Facebook, ArrowRight } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { toast } from '@/hooks/use-toast';
@@ -100,7 +100,7 @@ const Contact = () => {
                   </a>
                   <a href="https://tiktok.com/@daressny" target="_blank" rel="noopener noreferrer" 
                      className="bg-brand-blue/10 p-3 rounded-full hover:bg-brand-blue hover:text-white transition-colors">
-                    <Tiktok className="h-5 w-5" />
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 1 0 -6 0"/><path d="M13 12v8m-2 -8v8"/><path d="M15.09 4.111a8.82 8.82 0 0 0 -6.18 0"/><path d="M12 4v4"/><path d="M20 10c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10c1.088 0 2.134 .184 3.11 .523"/></svg>
                   </a>
                 </div>
               </div>
