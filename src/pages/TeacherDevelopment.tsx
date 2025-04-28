@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -6,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, FileText, Book, Lightbulb, Users, Bookmark, Award } from 'lucide-react';
+import { Calendar, Clock, FileText, Book, Lightbulb, Users, Bookmark, Award, Star } from 'lucide-react';
 
 // Development resources data
 const workshopsData = [
