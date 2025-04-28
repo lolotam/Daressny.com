@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import SuccessStories from "./pages/SuccessStories";
 import TeacherFAQ from "./pages/TeacherFAQ";
 import TeacherDevelopment from "./pages/TeacherDevelopment";
+import ShareSuccess from "./pages/ShareSuccess";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/success-stories" element={<SuccessStories />} />
+          <Route path="/share-success" element={<ShareSuccess />} />
           <Route path="/faq" element={<TeacherFAQ />} />
           <Route path="/teacher-development" element={<TeacherDevelopment />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
