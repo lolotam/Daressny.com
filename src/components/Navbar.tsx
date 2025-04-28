@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook } from 'lucide-react';
@@ -110,9 +109,9 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.name === 'المواد الدراسية' && <Book size={18} className="inline mr-2" />}
-                {item.name === 'المصادر التعليمية' && <BookOpen size={18} className="inline mr-2" />}
-                {item.name === 'اتصل بنا' && <MessageSquare size={18} className="inline mr-2" />}
+                {item.name === 'المواد الدراسية' && <Book size={18} className="inline ml-2" />}
+                {item.name === 'المصادر التعليمية' && <BookOpen size={18} className="inline ml-2" />}
+                {item.name === 'اتصل بنا' && <MessageSquare size={18} className="inline ml-2" />}
                 {item.name}
               </Link>
             ))}
