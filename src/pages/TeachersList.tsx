@@ -10,22 +10,27 @@ import { filterTeachers, getUniqueSubjects } from "@/data/teachersData";
 
 const TeachersList = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [subjectFilter, setSubjectFilter] = useState("");
-  const [priceSort, setPriceSort] = useState("");
-  const [ratingSort, setRatingSort] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("all");
+  const [priceSort, setPriceSort] = useState("default");
+  const [ratingSort, setRatingSort] = useState("default");
 
   // Get unique subjects for filter
   const subjects = getUniqueSubjects();
   
-  // Filter and sort teachers
-  const filteredTeachers = filterTeachers(searchTerm, subjectFilter, priceSort, ratingSort);
+  // Filter and sort teachers (modify to handle the new default values)
+  const filteredTeachers = filterTeachers(
+    searchTerm, 
+    subjectFilter === "all" ? "" : subjectFilter, 
+    priceSort === "default" ? "" : priceSort, 
+    ratingSort === "default" ? "" : ratingSort
+  );
 
   // Reset all filters
   const resetFilters = () => {
     setSearchTerm("");
-    setSubjectFilter("");
-    setPriceSort("");
-    setRatingSort("");
+    setSubjectFilter("all");
+    setPriceSort("default");
+    setRatingSort("default");
   };
 
   return (

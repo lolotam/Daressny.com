@@ -46,7 +46,7 @@ export const TeacherFilter = ({
               <SelectValue placeholder="جميع المواد" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">جميع المواد</SelectItem>
+              <SelectItem value="all">جميع المواد</SelectItem>
               {subjects.map((subject, index) => (
                 <SelectItem key={index} value={subject}>{subject}</SelectItem>
               ))}
@@ -60,7 +60,7 @@ export const TeacherFilter = ({
               <SelectValue placeholder="ترتيب افتراضي" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">ترتيب افتراضي</SelectItem>
+              <SelectItem value="default">ترتيب افتراضي</SelectItem>
               <SelectItem value="low-to-high">الأقل سعرًا</SelectItem>
               <SelectItem value="high-to-low">الأعلى سعرًا</SelectItem>
             </SelectContent>
@@ -73,7 +73,7 @@ export const TeacherFilter = ({
               <SelectValue placeholder="ترتيب افتراضي" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">ترتيب افتراضي</SelectItem>
+              <SelectItem value="default">ترتيب افتراضي</SelectItem>
               <SelectItem value="high-to-low">الأعلى تقييمًا</SelectItem>
             </SelectContent>
           </Select>
