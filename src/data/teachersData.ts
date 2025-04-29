@@ -366,9 +366,21 @@ export const teachersData: Teacher[] = [
       university: 26
     },
     experience: "16 سنة",
-    image: "https://images.unsplash.com/photo-1581339954406-c913e7c4ccbf?w=200&h=200&fit=crop",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
     location: "الكويت",
-    availability: "متاحة في الفترة الصباحية"
+    availability: "متاحة في الفترة الصباحية",
+    bio: "حاصلة على دكتوراه في اللغة العربية والأدب العربي من جامعة القاهرة. لديها خبرة تدريسية تزيد عن 16 عاماً في تدريس اللغة العربية وآدابها. متخصصة في تعليم قواعد اللغة العربية والبلاغة والنقد الأدبي.",
+    qualifications: [
+      "دكتوراه في اللغة العربية وآدابها - جامعة القاهرة",
+      "ماجستير في البلاغة والنقد الأدبي",
+      "بكالوريوس في اللغة العربية - جامعة الكويت"
+    ],
+    achievements: [
+      "مؤلفة لكتاب 'أساليب تعليم النحو والصرف للمبتدئين'",
+      "حائزة على جائزة التميز في التدريس لعام 2020",
+      "عضو في مجمع اللغة العربية"
+    ],
+    philosophy: "أؤمن بأن اللغة العربية هي هوية الأمة وتاريخها، وأسعى لتقديمها بصورة عصرية تجذب الطلاب وتشجعهم على التفاعل والإبداع، مع الحفاظ على أصالتها وقواعدها."
   },
   {
     id: 17,
@@ -632,7 +644,7 @@ export const subjectsData: Subject[] = [
       "معلمون متخصصون في فروع اللغة المختلفة",
       "استخدام أساليب تدريس تفاعلية",
       "الاعتماد على نصوص متنوعة من التراث والأدب الحديث",
-      "تنمية مهارات الإلقا�� والخطابة"
+      "تنمية مهارات الإلقاء والخطابة"
     ],
     image: "https://images.unsplash.com/photo-1639669896097-7c8bba127a75?w=800&auto=format&fit=crop",
     icon: "book"
@@ -710,34 +722,3 @@ export const getTeachersBySubject = (subjectName: string): Teacher[] => {
   return teachersData.filter(teacher => 
     teacher.subject === subjectName || 
     teacher.subjects.includes(subjectName)
-  );
-};
-
-export const getSubjectById = (id: number): Subject | undefined => {
-  return subjectsData.find(subject => subject.id === id);
-};
-
-export const getTeacherById = (id: number): Teacher | undefined => {
-  return teachersData.find(teacher => teacher.id === id);
-};
-
-export const filterTeachers = (
-  searchTerm: string = "",
-  subjectFilter: string = "",
-  priceSort: string = "",
-  ratingSort: string = ""
-): Teacher[] => {
-  return teachersData
-    .filter(teacher => {
-      const matchesSearch = teacher.name.includes(searchTerm) || 
-                          teacher.subject.includes(searchTerm);
-      const matchesSubject = subjectFilter ? teacher.subject === subjectFilter : true;
-      return matchesSearch && matchesSubject;
-    })
-    .sort((a, b) => {
-      if (priceSort === "low-to-high") return a.hourlyRate - b.hourlyRate;
-      if (priceSort === "high-to-low") return b.hourlyRate - a.hourlyRate;
-      if (ratingSort === "high-to-low") return b.rating - a.rating;
-      return 0;
-    });
-};
