@@ -217,6 +217,272 @@ export const teachersData: Teacher[] = [
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
     location: "الكويت",
     availability: "متاحة صباحاً ومساءً"
+  },
+  {
+    id: 9,
+    name: "د. عمر الشمري",
+    subject: "الرياضيات",
+    subjects: ["الرياضيات", "التفاضل والتكامل"],
+    rating: 4.8,
+    reviews: 95,
+    hourlyRate: 160,
+    hourlyRateRanges: {
+      elementary: 16,
+      middle: 19,
+      high: 23,
+      university: 28
+    },
+    experience: "14 سنة",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح جميع أيام الأسبوع عدا الجمعة"
+  },
+  {
+    id: 10,
+    name: "أ. هدى العنزي",
+    subject: "الرياضيات",
+    subjects: ["الرياضيات", "الهندسة"],
+    rating: 4.6,
+    reviews: 87,
+    hourlyRate: 130,
+    hourlyRateRanges: {
+      elementary: 14,
+      middle: 17,
+      high: 20,
+      university: 24
+    },
+    experience: "8 سنوات",
+    image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة في الفترات المسائية"
+  },
+  {
+    id: 11,
+    name: "د. يوسف الفهد",
+    subject: "الفيزياء",
+    subjects: ["الفيزياء", "الفلك"],
+    rating: 4.9,
+    reviews: 112,
+    hourlyRate: 170,
+    hourlyRateRanges: {
+      elementary: 16,
+      middle: 19,
+      high: 24,
+      university: 30
+    },
+    experience: "15 سنة",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح في الفترات الصباحية والمسائية"
+  },
+  {
+    id: 12,
+    name: "أ. مريم البلوشي",
+    subject: "الفيزياء",
+    subjects: ["الفيزياء", "الكهرومغناطيسية"],
+    rating: 4.7,
+    reviews: 78,
+    hourlyRate: 145,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 26
+    },
+    experience: "7 سنوات",
+    image: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة مساءً من الأحد إلى الخميس"
+  },
+  {
+    id: 13,
+    name: "د. صالح العتيبي",
+    subject: "الكيمياء",
+    subjects: ["الكيمياء", "الكيمياء الفيزيائية"],
+    rating: 4.8,
+    reviews: 104,
+    hourlyRate: 155,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 23,
+      university: 27
+    },
+    experience: "11 سنة",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح طوال أيام الأسبوع"
+  },
+  {
+    id: 14,
+    name: "أ. غادة المطيري",
+    subject: "الكيمياء",
+    subjects: ["الكيمياء", "الكيمياء التحليلية"],
+    rating: 4.6,
+    reviews: 82,
+    hourlyRate: 140,
+    hourlyRateRanges: {
+      elementary: 14,
+      middle: 16,
+      high: 21,
+      university: 25
+    },
+    experience: "9 سنوات",
+    image: "https://images.unsplash.com/photo-1618088129969-bcb0c051985e?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة من الساعة 3 عصراً حتى 9 مساءً"
+  },
+  {
+    id: 15,
+    name: "أ. سعد الماجد",
+    subject: "اللغة العربية",
+    subjects: ["اللغة العربية", "البلاغة"],
+    rating: 4.8,
+    reviews: 97,
+    hourlyRate: 135,
+    hourlyRateRanges: {
+      elementary: 14,
+      middle: 17,
+      high: 20,
+      university: 24
+    },
+    experience: "13 سنة",
+    image: "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح يومياً من الساعة 4 مساءً"
+  },
+  {
+    id: 16,
+    name: "د. منيرة السالم",
+    subject: "اللغة العربية",
+    subjects: ["اللغة العربية", "الأدب العربي"],
+    rating: 4.9,
+    reviews: 108,
+    hourlyRate: 150,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 26
+    },
+    experience: "16 سنة",
+    image: "https://images.unsplash.com/photo-1581339954406-c913e7c4ccbf?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة في الفترة الصباحية"
+  },
+  {
+    id: 17,
+    name: "أ. ناصر العجمي",
+    subject: "اللغة الإنجليزية",
+    subjects: ["اللغة الإنجليزية", "الكتابة الأكاديمية"],
+    rating: 4.7,
+    reviews: 91,
+    hourlyRate: 145,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 21,
+      university: 25
+    },
+    experience: "10 سنوات",
+    image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح في الفترة المسائية من 5 إلى 10"
+  },
+  {
+    id: 18,
+    name: "د. دانة الخالدي",
+    subject: "اللغة الإنجليزية",
+    subjects: ["اللغة الإنجليزية", "المحادثة"],
+    rating: 4.9,
+    reviews: 125,
+    hourlyRate: 160,
+    hourlyRateRanges: {
+      elementary: 16,
+      middle: 19,
+      high: 23,
+      university: 28
+    },
+    experience: "12 سنة",
+    image: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة طوال اليوم في عطلة نهاية الأسبوع"
+  },
+  {
+    id: 19,
+    name: "د. حمد الراشد",
+    subject: "الأحياء",
+    subjects: ["الأحياء", "علم الوراثة"],
+    rating: 4.8,
+    reviews: 89,
+    hourlyRate: 150,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 26
+    },
+    experience: "9 سنوات",
+    image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح في المساء من 4 إلى 9"
+  },
+  {
+    id: 20,
+    name: "أ. بدرية الكندري",
+    subject: "الأحياء",
+    subjects: ["الأحياء", "علم الأحياء الجزيئي"],
+    rating: 4.7,
+    reviews: 76,
+    hourlyRate: 140,
+    hourlyRateRanges: {
+      elementary: 14,
+      middle: 17,
+      high: 21,
+      university: 25
+    },
+    experience: "7 سنوات",
+    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاحة في الفترة الصباحية والمسائية"
+  },
+  {
+    id: 21,
+    name: "م. فيصل الحربي",
+    subject: "الحاسب الآلي",
+    subjects: ["الحاسب الآلي", "تطوير التطبيقات"],
+    rating: 4.9,
+    reviews: 117,
+    hourlyRate: 175,
+    hourlyRateRanges: {
+      elementary: 16,
+      middle: 19,
+      high: 24,
+      university: 30
+    },
+    experience: "8 سنوات",
+    image: "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح في الفترة المسائية"
+  },
+  {
+    id: 22,
+    name: "أ. نوف العتيبي",
+    subject: "الحاسب الآلي",
+    subjects: ["الحاسب الآلي", "تصميم المواقع"],
+    rating: 4.8,
+    reviews: 94,
+    hourlyRate: 155,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 26
+    },
+    experience: "6 سنوات",
+    image: "https://images.unsplash.com/photo-1587614387466-0a72ca909e16?w=200&h=200&fit=crop",
+    location: "الكويت",
+    availability: "متاح طوال أيام الأسبوع ماعدا الجمعة"
   }
 ];
 
