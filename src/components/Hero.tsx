@@ -45,8 +45,8 @@ export const Hero = () => {
           
           <div className="flex-1">
             <img 
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&h=500" 
-              alt="طالبة مع كمبيوتر محمول" 
+              src="/lovable-uploads/4d512c44-e327-4412-9921-e638faf4e113.png" 
+              alt="معلمة تساعد طالبة في الدراسة" 
               className="w-full rounded-lg shadow-xl"
             />
           </div>
