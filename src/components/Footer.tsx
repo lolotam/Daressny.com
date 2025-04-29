@@ -126,25 +126,33 @@ export const Footer = () => {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-brand-gold">{currentInfo.quickLinks}</h3>
-            <ul className="space-y-2">
+            <div className="flex flex-wrap">
               {currentQuickLinks.map((link, index) => (
-                <li key={index}>
-                  <Link to={link.path} className="hover:text-brand-blue transition-colors">{link.name}</Link>
-                </li>
+                <Link 
+                  key={index} 
+                  to={link.path} 
+                  className="mr-4 mb-2 text-sm hover:text-brand-blue transition-colors px-2 py-1 hover:bg-gray-800 rounded"
+                >
+                  {link.name}
+                </Link>
               ))}
-            </ul>
+            </div>
           </div>
           
           {/* Teacher Services */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-brand-gold">{currentInfo.teacherServices}</h3>
-            <ul className="space-y-2">
+            <div className="flex flex-wrap">
               {currentTeacherServices.map((link, index) => (
-                <li key={index}>
-                  <Link to={link.path} className="hover:text-brand-blue transition-colors">{link.name}</Link>
-                </li>
+                <Link 
+                  key={index} 
+                  to={link.path} 
+                  className="mr-4 mb-2 text-sm hover:text-brand-blue transition-colors px-2 py-1 hover:bg-gray-800 rounded"
+                >
+                  {link.name}
+                </Link>
               ))}
-            </ul>
+            </div>
           </div>
           
           {/* Contact Info */}
