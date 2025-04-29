@@ -36,15 +36,6 @@ export const TeacherCard = ({
 }: TeacherCardProps) => {
   const { currencySymbol } = useLanguage();
 
-  // Calculate min and max from hourly rate ranges, or use default hourlyRate
-  const minRate = hourlyRateRanges ? 
-    Math.min(hourlyRateRanges.elementary, hourlyRateRanges.middle, hourlyRateRanges.high, hourlyRateRanges.university) : 
-    hourlyRate;
-    
-  const maxRate = hourlyRateRanges ? 
-    Math.max(hourlyRateRanges.elementary, hourlyRateRanges.middle, hourlyRateRanges.high, hourlyRateRanges.university) : 
-    hourlyRate;
-
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
       <div className="aspect-square overflow-hidden relative">
@@ -73,13 +64,6 @@ export const TeacherCard = ({
             <div className="text-sm font-medium ms-1">{rating.toFixed(1)}</div>
           </div>
           <div className="text-sm text-gray-500">({reviewsCount} تقييم)</div>
-        </div>
-        
-        <div className="font-bold text-lg text-brand-blue">
-          {minRate === maxRate ? 
-            `${minRate} ${currencySymbol}/ساعة` : 
-            `${minRate}-${maxRate} ${currencySymbol}/ساعة`}
-          <div className="text-xs text-gray-500 mt-1">حسب المرحلة الدراسية</div>
         </div>
         
         <div className="text-sm text-gray-600 mt-2">
@@ -121,9 +105,9 @@ export const TeacherCard = ({
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90" asChild>
+        <Button className="w-full bg-brand-blue hover:bg-brand-blue" asChild>
           <Link to={`/teachers/${id}`}>
-            عرض الملف الشخصي
+            تواصل مع فريق الدعم
           </Link>
         </Button>
       </CardFooter>
