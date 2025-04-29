@@ -43,10 +43,10 @@ export const Navbar = () => {
         <Link to="/" className="flex items-center">
           <img 
             src="/lovable-uploads/67701b70-7d61-42f4-a7f4-f9f298d38920.png" 
-            alt="منصة درسني" 
-            className="h-10 mr-2" 
+            alt="درسني" 
+            className="h-14 w-auto mr-2" 
           />
-          <span className="text-2xl font-bold text-brand-blue">منصة درسني</span>
+          {/* Removed "منصة درسني" text */}
         </Link>
         
         {/* Desktop Navigation */}
