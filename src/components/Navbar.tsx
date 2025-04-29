@@ -55,9 +55,9 @@ export const Navbar = () => {
               <Link 
                 key={item.name} 
                 to={item.path} 
-                className={`font-medium text-sm transition-colors px-3 py-2 mx-1 rounded hover:bg-gray-100 ${
+                className={`font-semibold text-sm transition-colors px-3 py-2 mx-1 rounded hover:bg-gray-100 ${
                   isActive(item.path) 
-                    ? 'text-brand-blue' 
+                    ? 'text-brand-blue font-bold' 
                     : 'text-gray-700 hover:text-brand-blue'
                 }`}
               >
@@ -89,10 +89,10 @@ export const Navbar = () => {
 
         {/* Authentication Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
+          <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-semibold">
             <Link to="/login">{t('login')}</Link>
           </Button>
-          <Button asChild className="bg-brand-blue hover:bg-brand-blue/90">
+          <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 font-semibold">
             <Link to="/register">{t('register')}</Link>
           </Button>
         </div>
@@ -117,7 +117,7 @@ export const Navbar = () => {
               <Link 
                 key={item.name} 
                 to={item.path} 
-                className={`font-medium transition-colors py-2 border-b border-gray-100 ${
+                className={`font-bold transition-colors py-2 border-b border-gray-100 ${
                   isActive(item.path) 
                     ? 'text-brand-blue' 
                     : 'text-gray-700 hover:text-brand-blue'
@@ -149,10 +149,10 @@ export const Navbar = () => {
             </div>
 
             <div className="flex gap-4 mt-2">
-              <Button asChild variant="outline" className="flex-1 border-brand-blue text-brand-blue">
+              <Button asChild variant="outline" className="flex-1 border-brand-blue text-brand-blue font-semibold">
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>{t('login')}</Link>
               </Button>
-              <Button asChild className="flex-1 bg-brand-blue hover:bg-brand-blue/90">
+              <Button asChild className="flex-1 bg-brand-blue hover:bg-brand-blue/90 font-semibold">
                 <Link to="/register" onClick={() => setIsMenuOpen(false)}>{t('register')}</Link>
               </Button>
             </div>
