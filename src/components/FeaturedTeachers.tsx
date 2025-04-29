@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -12,7 +11,6 @@ export const FeaturedTeachers = () => {
       subject: "الرياضيات",
       rating: 4.9,
       reviews: 124,
-      hourlyRate: 150,
       image: "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=200&h=200&fit=crop"
     },
     {
@@ -21,7 +19,6 @@ export const FeaturedTeachers = () => {
       subject: "اللغة الإنجليزية",
       rating: 4.8,
       reviews: 98,
-      hourlyRate: 130,
       image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=200&fit=crop"
     },
     {
@@ -30,7 +27,6 @@ export const FeaturedTeachers = () => {
       subject: "الفيزياء",
       rating: 4.7,
       reviews: 87,
-      hourlyRate: 140,
       image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop"
     },
     {
@@ -39,7 +35,6 @@ export const FeaturedTeachers = () => {
       subject: "الكيمياء",
       rating: 4.9,
       reviews: 110,
-      hourlyRate: 145,
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop"
     }
   ];
