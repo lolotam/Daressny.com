@@ -7,6 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 const carouselImages = [
   {
@@ -88,6 +89,22 @@ const carouselImages = [
 ];
 
 export const EducationCarousel = () => {
+  const [api, setApi] = useState<any>(null);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    // Setup an interval to automatically advance the carousel
+    const autoPlayInterval = setInterval(() => {
+      api.scrollNext();
+    }, 3000); // Change slide every 3 seconds
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(autoPlayInterval);
+  }, [api]);
+
   return (
     <div className="py-16 bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto">
@@ -95,7 +112,10 @@ export const EducationCarousel = () => {
           لحظات تعليمية مميزة مع أفضل المعلمين
         </h2>
         
-        <Carousel className="w-full max-w-5xl mx-auto">
+        <Carousel className="w-full max-w-5xl mx-auto" setApi={setApi} opts={{
+          loop: true, // Enable carousel looping
+          align: "start",
+        }}>
           <CarouselContent className="-ml-2 md:-ml-4">
             {carouselImages.map((image, index) => (
               <CarouselItem key={index} className="pl-2 md:pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
