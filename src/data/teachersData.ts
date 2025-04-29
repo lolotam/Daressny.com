@@ -1,4 +1,3 @@
-
 export interface Teacher {
   id: number;
   name: string;
@@ -26,7 +25,7 @@ export interface Subject {
   certificates: string[];
   advantages: string[];
   image: string;
-  icon: React.ReactNode;
+  icon: string;
 }
 
 // بيانات المعلمين
@@ -198,9 +197,7 @@ export const subjectsData: Subject[] = [
       "أدوات تعليمية مبتكرة تساعد على فهم المفاهيم الصعبة"
     ],
     image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-    </svg>
+    icon: "calculator"
   },
   {
     id: 2,
@@ -230,9 +227,7 @@ export const subjectsData: Subject[] = [
       "مواد تعليمية حديثة ومتنوعة"
     ],
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-    </svg>
+    icon: "book-open"
   },
   {
     id: 3,
@@ -262,9 +257,7 @@ export const subjectsData: Subject[] = [
       "استخدام تقنيات المحاكاة والنمذجة الحديثة"
     ],
     image: "https://images.unsplash.com/photo-1636905101073-9e1e79b644de?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-    </svg>
+    icon: "link"
   },
   {
     id: 4,
@@ -294,9 +287,7 @@ export const subjectsData: Subject[] = [
       "ربط المفاهيم الكيميائية بالحياة اليومية"
     ],
     image: "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-    </svg>
+    icon: "file-text"
   },
   {
     id: 5,
@@ -323,12 +314,10 @@ export const subjectsData: Subject[] = [
       "معلمون متخصصون في فروع اللغة المختلفة",
       "استخدام أساليب تدريس تفاعلية",
       "الاعتماد على نصوص متنوعة من التراث والأدب الحديث",
-      "تنمية مهارات الإلقاء والخطابة"
+      "تنمية مهارات الإلقا�� والخطابة"
     ],
     image: "https://images.unsplash.com/photo-1639669896097-7c8bba127a75?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-    </svg>
+    icon: "book"
   },
   {
     id: 6,
@@ -358,9 +347,7 @@ export const subjectsData: Subject[] = [
       "ربط علم الأحياء بالتطبيقات الطبية والصحية"
     ],
     image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-    </svg>
+    icon: "user"
   },
   {
     id: 7,
@@ -390,9 +377,7 @@ export const subjectsData: Subject[] = [
       "تدريب على أحدث البرامج والتقنيات"
     ],
     image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=800&auto=format&fit=crop",
-    icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
+    icon: "search"
   }
 ];
 

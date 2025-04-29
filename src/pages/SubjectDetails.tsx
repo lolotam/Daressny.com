@@ -8,7 +8,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getSubjectById, getTeachersBySubject, Subject, Teacher } from "@/data/teachersData";
-import { ChevronLeft, ChevronRight, CheckCircle, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle, BookOpen, Calculator, Book, FileText, Search, Link as LinkIcon, User } from "lucide-react";
+
+// Helper function to render the correct icon based on string name
+const renderSubjectIcon = (iconName: string) => {
+  switch (iconName) {
+    case "calculator":
+      return <Calculator className="h-8 w-8" />;
+    case "book-open":
+      return <BookOpen className="h-8 w-8" />;
+    case "link":
+      return <LinkIcon className="h-8 w-8" />;
+    case "file-text":
+      return <FileText className="h-8 w-8" />;
+    case "book":
+      return <Book className="h-8 w-8" />;
+    case "user":
+      return <User className="h-8 w-8" />;
+    case "search":
+      return <Search className="h-8 w-8" />;
+    default:
+      return <BookOpen className="h-8 w-8" />;
+  }
+};
 
 const SubjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,7 +97,7 @@ const SubjectDetails = () => {
               <div className="lg:w-1/2">
                 <div className="mb-4 flex items-center">
                   <div className="mr-3 bg-brand-blue/10 p-3 rounded-full text-brand-blue">
-                    {subject.icon}
+                    {renderSubjectIcon(subject.icon)}
                   </div>
                 </div>
                 <h1 className="text-4xl font-bold mb-4">{subject.name}</h1>
