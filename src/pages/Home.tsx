@@ -1,5 +1,6 @@
 
 import { CallToAction } from '@/components/CallToAction';
+import { EducationCarousel } from '@/components/EducationCarousel';
 import { FeaturedTeachers } from '@/components/FeaturedTeachers';
 import { Features } from '@/components/Features';
 import { Footer } from '@/components/Footer';
@@ -17,6 +18,7 @@ const Home = () => {
       <Navbar />
       <main className="flex-grow">
         <Hero />
+        <EducationCarousel />
         <Features />
         <HowItWorks />
         <FeaturedTeachers />
