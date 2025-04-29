@@ -1,3 +1,4 @@
+
 export interface Teacher {
   id: number;
   name: string;
@@ -722,3 +723,34 @@ export const getTeachersBySubject = (subjectName: string): Teacher[] => {
   return teachersData.filter(teacher => 
     teacher.subject === subjectName || 
     teacher.subjects.includes(subjectName)
+  );
+};
+
+export const getSubjectById = (id: number): Subject | undefined => {
+  return subjectsData.find(subject => subject.id === id);
+};
+
+export const getTeacherById = (id: number): Teacher | undefined => {
+  return teachersData.find(teacher => teacher.id === id);
+};
+
+export const filterTeachers = (
+  searchTerm: string = "",
+  subjectFilter: string = "",
+  priceSort: string = "",
+  ratingSort: string = ""
+): Teacher[] => {
+  return teachersData
+    .filter(teacher => {
+      const matchesSearch = teacher.name.includes(searchTerm) || 
+                          teacher.subject.includes(searchTerm);
+      const matchesSubject = subjectFilter ? teacher.subject === subjectFilter : true;
+      return matchesSearch && matchesSubject;
+    })
+    .sort((a, b) => {
+      if (priceSort === "low-to-high") return a.hourlyRate - b.hourlyRate;
+      if (priceSort === "high-to-low") return b.hourlyRate - a.hourlyRate;
+      if (ratingSort === "high-to-low") return b.rating - a.rating;
+      return 0;
+    });
+};
