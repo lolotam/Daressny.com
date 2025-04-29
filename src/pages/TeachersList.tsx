@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TeacherCard } from "@/components/teachers/TeacherCard";
 import { TeacherFilter } from "@/components/teachers/TeacherFilter";
 import { EmptyState } from "@/components/teachers/EmptyState";
-import { filterTeachers, getUniqueSubjects } from "@/data/teachersData";
+import { filterTeachers, getUniqueSubjects, teachersData } from "@/data/teachersData";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const TeachersList = () => {
@@ -65,7 +65,18 @@ const TeachersList = () => {
           {filteredTeachers.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredTeachers.map((teacher) => (
-                <TeacherCard key={teacher.id} {...teacher} />
+                <TeacherCard 
+                  key={teacher.id}
+                  id={teacher.id}
+                  name={teacher.name}
+                  subjects={[teacher.subject]} // نحول المادة الواحدة إلى مصفوفة
+                  rating={teacher.rating}
+                  reviewsCount={teacher.reviews}
+                  hourlyRate={teacher.hourlyRate}
+                  location="الكويت"
+                  availability={teacher.experience}
+                  image={teacher.image}
+                />
               ))}
             </div>
           ) : (

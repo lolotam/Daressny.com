@@ -11,6 +11,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import TeachersList from "./pages/TeachersList";
+import TeacherDetails from "./pages/TeacherDetails";
+import SubjectDetails from "./pages/SubjectDetails";
 import Contact from "./pages/Contact";
 import Subjects from "./pages/Subjects";
 import Resources from "./pages/Resources";
@@ -35,8 +37,10 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/about" element={<About />} />
             <Route path="/teachers" element={<TeachersList />} />
+            <Route path="/teachers/:id" element={<TeacherDetails />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/subjects" element={<Subjects />} />
+            <Route path="/subjects/:id" element={<SubjectDetails />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/success-stories" element={<SuccessStories />} />
