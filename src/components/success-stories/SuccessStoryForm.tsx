@@ -1,5 +1,8 @@
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,311 +10,278 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/hooks/use-toast';
-import { validateEmail, validateFileSize, validateFileType } from '@/utils/formValidation';
+import { validateFileSize, validateFileType } from '@/utils/formValidation';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-interface SuccessStoryFormData {
-  fullName: string;
-  email: string;
-  phone: string;
-  userType: 'student' | 'teacher';
-  storyTitle: string;
-  storyDetails: string;
-  imageFile: File | null;
-  agreeToTerms: boolean;
-}
+// Create a schema for the form
+const formSchema = z.object({
+  fullName: z.string().min(1, { message: 'الاسم الكامل مطلوب' }),
+  email: z.string().min(1, { message: 'البريد الإلكتروني مطلوب' }).email({ message: 'البريد الإلكتروني غير صحيح' }),
+  phone: z.string().optional(),
+  userType: z.enum(['student', 'teacher']),
+  storyTitle: z.string().min(1, { message: 'عنوان القصة مطلوب' }),
+  storyDetails: z.string().min(1, { message: 'تفاصيل القصة مطلوبة' }),
+  agreeToTerms: z.boolean().refine(value => value === true, {
+    message: 'يجب الموافقة على الشروط',
+  })
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export const SuccessStoryForm = () => {
-  const [formData, setFormData] = useState<SuccessStoryFormData>({
-    fullName: '',
-    email: '',
-    phone: '',
-    userType: 'student',
-    storyTitle: '',
-    storyDetails: '',
-    imageFile: null,
-    agreeToTerms: false,
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Initialize React Hook Form
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phone: '',
+      userType: 'student',
+      storyTitle: '',
+      storyDetails: '',
+      agreeToTerms: false,
+    },
   });
   
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Clear error for this field when user types
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-  };
-
-  const handleRadioChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, userType: value as 'student' | 'teacher' }));
-  };
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, agreeToTerms: checked }));
-    
-    if (errors.agreeToTerms) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors.agreeToTerms;
-        return newErrors;
-      });
-    }
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageError(null);
+    
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       
       // Check file size (max 2MB)
       if (!validateFileSize(file, 2)) {
-        setErrors((prev) => ({ ...prev, imageFile: 'حجم الملف يجب أن لا يتجاوز 2MB' }));
+        setImageError('حجم الملف يجب أن لا يتجاوز 2MB');
         return;
       }
       
       // Check file type
       if (!validateFileType(file, ['image/jpeg', 'image/png'])) {
-        setErrors((prev) => ({ ...prev, imageFile: 'يجب أن تكون الصورة بصيغة JPEG أو PNG' }));
+        setImageError('يجب أن تكون الصورة بصيغة JPEG أو PNG');
         return;
       }
       
-      setFormData((prev) => ({ ...prev, imageFile: file }));
-      
-      if (errors.imageFile) {
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors.imageFile;
-          return newErrors;
-        });
-      }
+      setImageFile(file);
     }
   };
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'الاسم الكامل مطلوب';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'البريد الإلكتروني مطلوب';
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'البريد الإلكتروني غير صحيح';
-    }
-    
-    if (!formData.storyTitle.trim()) {
-      newErrors.storyTitle = 'عنوان القصة مطلوب';
-    }
-    
-    if (!formData.storyDetails.trim()) {
-      newErrors.storyDetails = 'تفاصيل القصة مطلوبة';
-    }
-    
-    if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'يجب الموافقة على الشروط';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     
-    // Here you would typically send the form data to your backend
-    // For now, we'll simulate a successful submission
+    // Simulate form submission with a delay
     setTimeout(() => {
+      // Log form data and image file for debugging
+      console.log('Form submitted:', { ...data, imageFile });
+      
       toast({
         title: "🎉 شكرًا لمشاركتك!",
         description: "سنراجع قصتك ونتواصل معك قريبًا.",
       });
       
       // Reset form
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        userType: 'student',
-        storyTitle: '',
-        storyDetails: '',
-        imageFile: null,
-        agreeToTerms: false,
-      });
-      
+      form.reset();
+      setImageFile(null);
       setIsSubmitting(false);
     }, 1500);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <Label htmlFor="fullName" className="text-base font-medium">
-          الاسم الكامل <span className="text-red-500">*</span>
-        </Label>
-        <Input
-          id="fullName"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
           name="fullName"
-          value={formData.fullName}
-          onChange={handleInputChange}
-          placeholder="أدخل اسمك الكامل"
-          className={errors.fullName ? "border-red-500" : ""}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                الاسم الكامل <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="أدخل اسمك الكامل"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.fullName && (
-          <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
-        )}
-      </div>
-      
-      <div>
-        <Label htmlFor="email" className="text-base font-medium">
-          البريد الإلكتروني <span className="text-red-500">*</span>
-        </Label>
-        <Input
-          id="email"
+        
+        <FormField
+          control={form.control}
           name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          placeholder="example@email.com"
-          className={`ltr ${errors.email ? "border-red-500" : ""}`}
-          dir="ltr"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                البريد الإلكتروني <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="example@email.com"
+                  className="ltr"
+                  dir="ltr"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-        )}
-      </div>
-      
-      <div>
-        <Label htmlFor="phone" className="text-base font-medium">
-          رقم الهاتف (اختياري)
-        </Label>
-        <Input
-          id="phone"
+        
+        <FormField
+          control={form.control}
           name="phone"
-          type="tel"
-          value={formData.phone}
-          onChange={handleInputChange}
-          placeholder="+96555000000"
-          className="ltr"
-          dir="ltr"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                رقم الهاتف (اختياري)
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="tel"
+                  placeholder="+96555000000"
+                  className="ltr"
+                  dir="ltr"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
         />
-      </div>
-      
-      <div>
-        <Label className="text-base font-medium">
-          هل أنت طالب أم مدرس؟ <span className="text-red-500">*</span>
-        </Label>
-        <RadioGroup 
-          value={formData.userType} 
-          onValueChange={handleRadioChange}
-          className="flex gap-6 mt-2"
-        >
-          <div className="flex items-center gap-2">
-            <RadioGroupItem value="student" id="student" />
-            <Label htmlFor="student">طالب</Label>
-          </div>
-          <div className="flex items-center gap-2">
-            <RadioGroupItem value="teacher" id="teacher" />
-            <Label htmlFor="teacher">مدرس</Label>
-          </div>
-        </RadioGroup>
-      </div>
-      
-      <div>
-        <Label htmlFor="storyTitle" className="text-base font-medium">
-          عنوان قصة النجاح <span className="text-red-500">*</span>
-        </Label>
-        <Input
-          id="storyTitle"
+        
+        <FormField
+          control={form.control}
+          name="userType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                هل أنت طالب أم مدرس؟ <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  value={field.value}
+                  className="flex gap-6 mt-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="student" id="student" />
+                    <Label htmlFor="student">طالب</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="teacher" id="teacher" />
+                    <Label htmlFor="teacher">مدرس</Label>
+                  </div>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
           name="storyTitle"
-          value={formData.storyTitle}
-          onChange={handleInputChange}
-          placeholder="أدخل عنوانًا موجزًا لقصتك"
-          className={errors.storyTitle ? "border-red-500" : ""}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                عنوان قصة النجاح <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="أدخل عنوانًا موجزًا لقصتك"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        {errors.storyTitle && (
-          <p className="text-red-500 text-sm mt-1">{errors.storyTitle}</p>
-        )}
-      </div>
-      
-      <div>
-        <Label htmlFor="storyDetails" className="text-base font-medium">
-          تفاصيل قصة النجاح <span className="text-red-500">*</span>
-        </Label>
-        <Textarea
-          id="storyDetails"
+        
+        <FormField
+          control={form.control}
           name="storyDetails"
-          value={formData.storyDetails}
-          onChange={handleInputChange}
-          placeholder="اشرح قصتك بالتفصيل وكيف ساعدتك منصة درسني..."
-          className={`min-h-[150px] ${errors.storyDetails ? "border-red-500" : ""}`}
-        />
-        {errors.storyDetails && (
-          <p className="text-red-500 text-sm mt-1">{errors.storyDetails}</p>
-        )}
-      </div>
-      
-      <div>
-        <Label htmlFor="imageFile" className="text-base font-medium">
-          ارفع صورة (اختياري)
-        </Label>
-        <div className="mt-1">
-          <Input
-            id="imageFile"
-            name="imageFile"
-            type="file"
-            accept="image/jpeg,image/png"
-            onChange={handleFileChange}
-            className={errors.imageFile ? "border-red-500" : ""}
-          />
-          <p className="text-gray-500 text-xs mt-1">
-            صيغة JPEG/PNG بحد أقصى 2MB
-          </p>
-          {errors.imageFile && (
-            <p className="text-red-500 text-sm mt-1">{errors.imageFile}</p>
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-medium">
+                تفاصيل قصة النجاح <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="اشرح قصتك بالتفصيل وكيف ساعدتك منصة درسني..."
+                  className="min-h-[150px]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
-      </div>
-      
-      <div className="flex items-start gap-2">
-        <Checkbox 
-          id="agreeToTerms"
-          checked={formData.agreeToTerms}
-          onCheckedChange={handleCheckboxChange}
-          className={errors.agreeToTerms ? "border-red-500" : ""}
         />
+        
         <div>
-          <Label 
-            htmlFor="agreeToTerms" 
-            className={`text-sm font-medium ${errors.agreeToTerms ? "text-red-500" : ""}`}
-          >
-            أوافق على نشر قصتي في منصة درسني بعد مراجعتها.
+          <Label htmlFor="imageFile" className="text-base font-medium">
+            ارفع صورة (اختياري)
           </Label>
-          {errors.agreeToTerms && (
-            <p className="text-red-500 text-sm">{errors.agreeToTerms}</p>
-          )}
+          <div className="mt-1">
+            <Input
+              id="imageFile"
+              name="imageFile"
+              type="file"
+              accept="image/jpeg,image/png"
+              onChange={handleFileChange}
+              className={imageError ? "border-red-500" : ""}
+            />
+            <p className="text-gray-500 text-xs mt-1">
+              صيغة JPEG/PNG بحد أقصى 2MB
+            </p>
+            {imageError && (
+              <p className="text-red-500 text-sm mt-1">{imageError}</p>
+            )}
+          </div>
         </div>
-      </div>
-      
-      <Button 
-        type="submit" 
-        className="w-full bg-brand-blue hover:bg-brand-blue/90"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "جارِ الإرسال..." : "أرسل قصتك"}
-      </Button>
-    </form>
+        
+        <FormField
+          control={form.control}
+          name="agreeToTerms"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-2 space-y-0 rtl:space-x-reverse">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  id="agreeToTerms"
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none mr-2 rtl:mr-0 rtl:ml-2">
+                <FormLabel className="text-sm font-medium">
+                  أوافق على نشر قصتي في منصة درسني بعد مراجعتها.
+                </FormLabel>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+        
+        <Button 
+          type="submit" 
+          className="w-full bg-brand-blue hover:bg-brand-blue/90"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "جارِ الإرسال..." : "أرسل قصتك"}
+        </Button>
+      </form>
+    </Form>
   );
 };
