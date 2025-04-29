@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,19 @@ const TeachersList = () => {
   const [subjectFilter, setSubjectFilter] = useState("all");
   const [priceSort, setPriceSort] = useState("default");
   const [ratingSort, setRatingSort] = useState("default");
+  const location = useLocation();
 
+  // Extract subject ID from URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const subjectId = params.get('subject');
+    
+    if (subjectId) {
+      // If there's a subject ID in the URL, set it as the filter
+      setSubjectFilter(subjectId);
+    }
+  }, [location]);
+  
   // Get unique subjects for filter
   const subjects = getUniqueSubjects();
   
@@ -69,7 +82,7 @@ const TeachersList = () => {
                   key={teacher.id}
                   id={teacher.id}
                   name={teacher.name}
-                  subjects={[teacher.subject]} // نحول المادة الواحدة إلى مصفوفة
+                  subjects={[teacher.subject]}
                   rating={teacher.rating}
                   reviewsCount={teacher.reviews}
                   hourlyRate={teacher.hourlyRate}

@@ -105,7 +105,7 @@ export const TeacherCard = ({
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full bg-brand-blue hover:bg-brand-blue" asChild>
+        <Button className="w-full bg-brand-blue hover:bg-brand-blue text-white" asChild>
           <Link to={`/teachers/${id}`}>
             تواصل مع فريق الدعم
           </Link>

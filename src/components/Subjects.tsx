@@ -103,7 +103,7 @@ export const Subjects = () => {
           {subjects.map((subject) => (
             <Link
               key={subject.id}
-              to={`/subjects/${subject.id}`}
+              to={`/teachers?subject=${subject.id}`}
               className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col items-center text-center"
             >
               <div className="text-brand-blue mb-4">{subject.icon}</div>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -12,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Book, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type SubjectType = {
   id: number;
@@ -25,6 +27,7 @@ const Subjects = () => {
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [selectedMethod, setSelectedMethod] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const navigate = useNavigate();
   
   const subjects: SubjectType[] = [
     {
@@ -75,9 +78,11 @@ const Subjects = () => {
       id: 5,
       name: "اللغة العربية",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
+        <img 
+          src="https://images.unsplash.com/photo-1466442929976-97f336a657be?w=200&h=200&fit=crop" 
+          alt="اللغة العربية" 
+          className="h-12 w-12 rounded-full object-cover"
+        />
       ),
       levels: ['ابتدائي', 'متوسط', 'ثانوي', 'جامعي'],
       teachingMethods: ['منزل', 'أونلاين', 'مجموعة']
@@ -95,7 +100,7 @@ const Subjects = () => {
     },
     {
       id: 7,
-      name: "اللغة الفرنسية",
+      name: "العلوم",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
@@ -169,6 +174,17 @@ const Subjects = () => {
       ),
       levels: ['ابتدائي', 'متوسط', 'ثانوي', 'جامعي'],
       teachingMethods: ['منزل', 'أونلاين', 'مجموعة']
+    },
+    {
+      id: 14,
+      name: "الإجتماعيات",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      levels: ['ابتدائي', 'متوسط', 'ثانوي', 'جامعي'],
+      teachingMethods: ['منزل', 'أونلاين', 'مجموعة']
     }
   ];
 
@@ -179,6 +195,11 @@ const Subjects = () => {
     
     return matchesLevel && matchesMethod && matchesSearch;
   });
+
+  // Function to handle showing teachers for a specific subject
+  const handleShowTeachers = (subjectId: number) => {
+    navigate(`/teachers?subject=${subjectId}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -264,8 +285,11 @@ const Subjects = () => {
                   <p>المراحل: {subject.levels.join(', ')}</p>
                   <p>الدراسة: {subject.teachingMethods.join(', ')}</p>
                 </div>
-                <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 mt-auto">
-                  <a href={`/subjects/${subject.id}`}>عرض المعلمين</a>
+                <Button 
+                  className="bg-brand-blue hover:bg-brand-blue/90 mt-auto"
+                  onClick={() => handleShowTeachers(subject.id)}
+                >
+                  عرض المعلمين
                 </Button>
               </div>
             ))}

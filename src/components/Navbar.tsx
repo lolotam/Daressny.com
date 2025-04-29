@@ -40,8 +40,13 @@ export const Navbar = () => {
   return (
     <nav className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-brand-blue">
-          منصة درسني
+        <Link to="/" className="flex items-center">
+          <img 
+            src="/lovable-uploads/67701b70-7d61-42f4-a7f4-f9f298d38920.png" 
+            alt="منصة درسني" 
+            className="h-10 mr-2" 
+          />
+          <span className="text-2xl font-bold text-brand-blue">منصة درسني</span>
         </Link>
         
         {/* Desktop Navigation */}
