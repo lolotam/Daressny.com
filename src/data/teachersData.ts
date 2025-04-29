@@ -6,6 +6,12 @@ export interface Teacher {
   rating: number;
   reviews: number;
   hourlyRate: number;
+  hourlyRateRanges?: {
+    elementary: number;
+    middle: number;
+    high: number;
+    university: number;
+  };
   experience: string;
   image: string;
   bio?: string;
@@ -28,7 +34,6 @@ export interface Subject {
   icon: string;
 }
 
-// بيانات المعلمين
 export const teachersData: Teacher[] = [
   {
     id: 1,
@@ -38,6 +43,12 @@ export const teachersData: Teacher[] = [
     rating: 4.9,
     reviews: 124,
     hourlyRate: 150,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "10+ سنوات",
     image: "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=200&h=200&fit=crop",
     bio: "حاصل على دكتوراه في الرياضيات من جامعة الكويت، لديه خبرة أكثر من 10 سنوات في تدريس الرياضيات لجميع المراحل الدراسية.",
@@ -63,6 +74,12 @@ export const teachersData: Teacher[] = [
     rating: 4.8,
     reviews: 98,
     hourlyRate: 130,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 17,
+      high: 20,
+      university: 24
+    },
     experience: "8 سنوات",
     image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=200&fit=crop",
     bio: "مدرسة لغة إنجليزية متميزة حاصلة على شهادة CELTA من جامعة كامبريدج، لديها خبرة 8 سنوات في تدريس اللغة الإنجليزية لمختلف المستويات والأعمار.",
@@ -88,6 +105,12 @@ export const teachersData: Teacher[] = [
     rating: 4.7,
     reviews: 87,
     hourlyRate: 140,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "12 سنة",
     image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop",
     bio: "دكتور في الفيزياء النظرية مع خبرة 12 عام في التدريس، حاصل على العديد من الجوائز العلمية، ويعمل أيضاً كباحث في مجال الفيزياء.",
@@ -107,6 +130,12 @@ export const teachersData: Teacher[] = [
     rating: 4.9,
     reviews: 110,
     hourlyRate: 145,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "7 سنوات",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
     bio: "متخصصة في الكيمياء العضوية ولديها خبرة سبع سنوات في التدريس. تتميز بأسلوبها الممتع في شرح التجارب العملية وربطها بالحياة اليومية.",
@@ -121,6 +150,12 @@ export const teachersData: Teacher[] = [
     rating: 4.6,
     reviews: 76,
     hourlyRate: 120,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "9 سنوات",
     image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop",
     location: "الكويت",
@@ -134,6 +169,12 @@ export const teachersData: Teacher[] = [
     rating: 4.8,
     reviews: 92,
     hourlyRate: 135,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "6 سنوات",
     image: "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=200&h=200&fit=crop",
     location: "الكويت",
@@ -147,6 +188,12 @@ export const teachersData: Teacher[] = [
     rating: 4.7,
     reviews: 68,
     hourlyRate: 160,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "5 سنوات",
     image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop",
     location: "الكويت",
@@ -160,6 +207,12 @@ export const teachersData: Teacher[] = [
     rating: 4.5,
     reviews: 61,
     hourlyRate: 125,
+    hourlyRateRanges: {
+      elementary: 15,
+      middle: 18,
+      high: 22,
+      university: 25
+    },
     experience: "4 سنوات",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
     location: "الكويت",
@@ -167,7 +220,6 @@ export const teachersData: Teacher[] = [
   }
 ];
 
-// بيانات المواد الدراسية
 export const subjectsData: Subject[] = [
   {
     id: 1,
@@ -381,7 +433,6 @@ export const subjectsData: Subject[] = [
   }
 ];
 
-// دوال المساعدة للفلترة والتصنيف
 export const allTeachers = teachersData;
 
 export const getUniqueSubjects = (): string[] => {

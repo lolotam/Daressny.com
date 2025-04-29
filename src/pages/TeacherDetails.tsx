@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getTeacherById, Teacher } from "@/data/teachersData";
-import { Calendar, Clock, MapPin, Star, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Clock, MapPin, Star, MessageSquare, ChevronLeft, ChevronRight, School, GraduationCap } from "lucide-react";
 
 const TeacherDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -146,6 +146,67 @@ const TeacherDetails = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Hourly Rate Section */}
+                  {teacher.hourlyRateRanges ? (
+                    <div className="mb-6 bg-gray-50 p-5 rounded-lg">
+                      <h2 className="text-xl font-bold mb-3">
+                        {language === 'ar' ? 'أسعار الساعة التعليمية' : 'Hourly Rates'}
+                      </h2>
+                      <p className="text-gray-600 mb-4">
+                        {language === 'ar' ? 'تختلف أسعار الساعة التعليمية حسب المرحلة الدراسية:' : 'Prices vary based on educational level:'}
+                      </p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="bg-white p-3 rounded-md border border-gray-200 flex items-center gap-3">
+                          <div className="bg-blue-100 p-2 rounded-full">
+                            <School size={18} className="text-brand-blue" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">{language === 'ar' ? 'المرحلة الابتدائية' : 'Elementary'}</p>
+                            <p className="font-semibold">{teacher.hourlyRateRanges.elementary} {currencySymbol}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-white p-3 rounded-md border border-gray-200 flex items-center gap-3">
+                          <div className="bg-green-100 p-2 rounded-full">
+                            <School size={18} className="text-green-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">{language === 'ar' ? 'المرحلة المتوسطة' : 'Middle School'}</p>
+                            <p className="font-semibold">{teacher.hourlyRateRanges.middle} {currencySymbol}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-white p-3 rounded-md border border-gray-200 flex items-center gap-3">
+                          <div className="bg-purple-100 p-2 rounded-full">
+                            <School size={18} className="text-purple-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">{language === 'ar' ? 'المرحلة الثانوية' : 'High School'}</p>
+                            <p className="font-semibold">{teacher.hourlyRateRanges.high} {currencySymbol}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-white p-3 rounded-md border border-gray-200 flex items-center gap-3">
+                          <div className="bg-orange-100 p-2 rounded-full">
+                            <GraduationCap size={18} className="text-orange-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">{language === 'ar' ? 'المرحلة الجامعية' : 'University'}</p>
+                            <p className="font-semibold">{teacher.hourlyRateRanges.university} {currencySymbol}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mb-6 bg-gray-50 p-5 rounded-lg">
+                      <h2 className="text-xl font-bold mb-2">
+                        {language === 'ar' ? 'سعر الساعة التعليمية' : 'Hourly Rate'}
+                      </h2>
+                      <p className="text-2xl font-bold text-brand-blue">{teacher.hourlyRate} {currencySymbol}</p>
+                    </div>
+                  )}
 
                   <div className="mb-6">
                     <h2 className="text-xl font-bold mb-3">

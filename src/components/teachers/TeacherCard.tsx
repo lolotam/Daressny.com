@@ -2,6 +2,7 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
 
 interface TeacherCardProps {
   id: number;
@@ -11,21 +12,38 @@ interface TeacherCardProps {
   rating: number;
   reviewsCount: number;
   hourlyRate: number;
+  hourlyRateRanges?: {
+    elementary: number;
+    middle: number;
+    high: number;
+    university: number;
+  };
   location: string;
   availability: string;
 }
 
 export const TeacherCard = ({
+  id,
   name,
   image,
   subjects,
   rating,
   reviewsCount,
   hourlyRate,
+  hourlyRateRanges,
   location,
   availability,
 }: TeacherCardProps) => {
   const { currencySymbol } = useLanguage();
+
+  // Calculate min and max from hourly rate ranges, or use default hourlyRate
+  const minRate = hourlyRateRanges ? 
+    Math.min(hourlyRateRanges.elementary, hourlyRateRanges.middle, hourlyRateRanges.high, hourlyRateRanges.university) : 
+    hourlyRate;
+    
+  const maxRate = hourlyRateRanges ? 
+    Math.max(hourlyRateRanges.elementary, hourlyRateRanges.middle, hourlyRateRanges.high, hourlyRateRanges.university) : 
+    hourlyRate;
 
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
@@ -56,9 +74,14 @@ export const TeacherCard = ({
           </div>
           <span className="text-sm text-gray-500">({reviewsCount} تقييم)</span>
         </div>
+        
         <p className="font-bold text-lg text-brand-blue">
-          {hourlyRate} {currencySymbol}/ساعة
+          {minRate === maxRate ? 
+            `${minRate} ${currencySymbol}/ساعة` : 
+            `${minRate}-${maxRate} ${currencySymbol}/ساعة`}
+          <span className="text-xs text-gray-500 block mt-1">حسب المرحلة الدراسية</span>
         </p>
+        
         <div className="text-sm text-gray-600 mt-2">
           <p className="flex items-center gap-1.5">
             <svg
@@ -98,8 +121,10 @@ export const TeacherCard = ({
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90">
-          عرض الملف الشخصي
+        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90" asChild>
+          <Link to={`/teachers/${id}`}>
+            عرض الملف الشخصي
+          </Link>
         </Button>
       </CardFooter>
     </Card>
