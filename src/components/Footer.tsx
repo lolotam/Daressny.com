@@ -111,7 +111,7 @@ export const Footer = () => {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M9 12a3 3 0 1 0 6 0 3 3 0 1 0 -6 0"/><path d="M13 12v8m-2 -8v8"/><path d="M15.09 4.111a8.82 8.82 0 0 0 -6.18 0"/><path d="M12 4v4"/><path d="M20 10c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10c1.088 0 2.134 .184 3.11 .523"/></svg>
               </a>
               <a 
-                href="https://wa.me/96555683677" 
+                href="https://wa.me/96560685150" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-brand-blue/10 p-2 rounded-full hover:bg-brand-blue hover:text-white transition-colors"
@@ -170,12 +170,12 @@ export const Footer = () => {
               
               <div className="space-y-2">
                 <Button asChild className="w-full" variant="outline">
-                  <a href="https://wa.me/96555683677" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/96560685150" target="_blank" rel="noopener noreferrer">
                     {currentInfo.supportTeam}
                   </a>
                 </Button>
                 <Button asChild className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                  <a href="https://wa.me/96555683677" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/96560685150" target="_blank" rel="noopener noreferrer">
                     {currentInfo.bookSession}
                   </a>
                 </Button>
