@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook } from 'lucide-react';
@@ -45,46 +46,45 @@ export const Navbar = () => {
             alt="درسني" 
             className="h-14 w-auto mr-2" 
           />
-          {/* Removed "منصة درسني" text */}
         </Link>
         
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              to={item.path} 
-              className={`font-medium transition-colors relative py-2 px-1 group ${
-                isActive(item.path) 
-                  ? 'text-brand-blue' 
-                  : 'text-gray-700 hover:text-brand-blue'
-              }`}
-            >
-              {item.name}
-              <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-brand-blue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left ${
-                isActive(item.path) ? 'scale-x-100' : ''
-              }`}></span>
-            </Link>
-          ))}
+        {/* Desktop Navigation - Updated to show on a single row */}
+        <div className="hidden md:flex items-center space-x-6">
+          <div className="flex items-center">
+            {navItems.map((item) => (
+              <Link 
+                key={item.name} 
+                to={item.path} 
+                className={`font-medium text-sm transition-colors px-3 py-2 mx-1 rounded hover:bg-gray-100 ${
+                  isActive(item.path) 
+                    ? 'text-brand-blue' 
+                    : 'text-gray-700 hover:text-brand-blue'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Language Switcher + Social Media Icons (Desktop) */}
-        <div className="hidden md:flex items-center gap-4 mr-8">
+        <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-3 mr-4">
+            {socialItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-brand-blue transition-colors"
+                aria-label={item.label}
+                title={item.label === 'WhatsApp' ? 'تواصل معنا عبر واتساب' : item.label}
+              >
+                {item.icon}
+              </a>
+            ))}
+          </div>
           <LanguageSwitcher />
-          
-          {socialItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-brand-blue transition-colors"
-              aria-label={item.label}
-              title={item.label === 'WhatsApp' ? 'تواصل معنا عبر واتساب' : item.label}
-            >
-              {item.icon}
-            </a>
-          ))}
         </div>
 
         {/* Authentication Buttons */}
