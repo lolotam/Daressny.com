@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TeacherFilterProps {
   searchTerm: string;
@@ -26,27 +27,29 @@ export const TeacherFilter = ({
   onPriceSortChange,
   onRatingSortChange
 }: TeacherFilterProps) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-      <h2 className="text-xl font-semibold mb-4">البحث والتصفية</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('searchFilter')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <Label htmlFor="search">البحث عن معلم</Label>
+          <Label htmlFor="search">{t('searchTeacher')}</Label>
           <Input 
             id="search" 
-            placeholder="ابحث بالاسم أو المادة" 
+            placeholder={t('searchTeacher')}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
         <div>
-          <Label htmlFor="subject-filter">تصفية حسب المادة</Label>
+          <Label htmlFor="subject-filter">{t('subjectFilter')}</Label>
           <Select value={subjectFilter} onValueChange={onSubjectChange}>
             <SelectTrigger id="subject-filter">
-              <SelectValue placeholder="جميع المواد" />
+              <SelectValue placeholder={t('allSubjects')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">جميع المواد</SelectItem>
+              <SelectItem value="all">{t('allSubjects')}</SelectItem>
               {subjects.map((subject, index) => (
                 <SelectItem key={index} value={subject}>{subject}</SelectItem>
               ))}
@@ -54,27 +57,27 @@ export const TeacherFilter = ({
           </Select>
         </div>
         <div>
-          <Label htmlFor="price-sort">ترتيب حسب السعر</Label>
+          <Label htmlFor="price-sort">{t('priceSort')}</Label>
           <Select value={priceSort} onValueChange={onPriceSortChange}>
             <SelectTrigger id="price-sort">
-              <SelectValue placeholder="ترتيب افتراضي" />
+              <SelectValue placeholder={t('defaultSort')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">ترتيب افتراضي</SelectItem>
-              <SelectItem value="low-to-high">الأقل سعرًا</SelectItem>
-              <SelectItem value="high-to-low">الأعلى سعرًا</SelectItem>
+              <SelectItem value="default">{t('defaultSort')}</SelectItem>
+              <SelectItem value="low-to-high">{t('lowToHigh')}</SelectItem>
+              <SelectItem value="high-to-low">{t('highToLow')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div>
-          <Label htmlFor="rating-sort">ترتيب حسب التقييم</Label>
+          <Label htmlFor="rating-sort">{t('ratingSort')}</Label>
           <Select value={ratingSort} onValueChange={onRatingSortChange}>
             <SelectTrigger id="rating-sort">
-              <SelectValue placeholder="ترتيب افتراضي" />
+              <SelectValue placeholder={t('defaultSort')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">ترتيب افتراضي</SelectItem>
-              <SelectItem value="high-to-low">الأعلى تقييمًا</SelectItem>
+              <SelectItem value="default">{t('defaultSort')}</SelectItem>
+              <SelectItem value="high-to-low">{t('highestRated')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

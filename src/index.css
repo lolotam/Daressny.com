@@ -93,7 +93,14 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    direction: rtl;
+  }
+
+  html[dir="rtl"] body {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+  }
+
+  html[dir="ltr"] body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -107,4 +114,24 @@
 
 .rtl {
   direction: rtl;
+}
+
+/* RTL-specific styles */
+html[dir="rtl"] .accordion-content {
+  text-align: right;
+}
+
+html[dir="rtl"] .checkbox-label {
+  padding-right: 0.5rem;
+  padding-left: 0;
+}
+
+html[dir="rtl"] .select-trigger .select-icon {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Mirror certain icons in RTL mode */
+html[dir="rtl"] .flip-in-rtl {
+  transform: scaleX(-1);
 }

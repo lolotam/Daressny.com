@@ -3,20 +3,23 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   // Navigation items
   const navItems = [
-    { name: 'الرئيسية', path: '/' },
-    { name: 'المواد الدراسية', path: '/subjects' },
-    { name: 'المصادر التعليمية', path: '/resources' },
-    { name: 'احجز درس', path: '/book' },
-    { name: 'انضم كمدرس', path: '/join-teacher' },
-    { name: 'المدونة', path: '/blog' },
-    { name: 'اتصل بنا', path: '/contact' },
+    { name: t('home'), path: '/' },
+    { name: t('subjects'), path: '/subjects' },
+    { name: t('resources'), path: '/resources' },
+    { name: t('book'), path: '/book' },
+    { name: t('joinTeacher'), path: '/join-teacher' },
+    { name: t('blog'), path: '/blog' },
+    { name: t('contact'), path: '/contact' },
   ];
 
   // Social media items
@@ -61,8 +64,10 @@ export const Navbar = () => {
           ))}
         </div>
 
-        {/* Social Media Icons (Desktop) */}
+        {/* Language Switcher + Social Media Icons (Desktop) */}
         <div className="hidden md:flex items-center gap-4 mr-8">
+          <LanguageSwitcher />
+          
           {socialItems.map((item) => (
             <a
               key={item.label}
@@ -81,20 +86,23 @@ export const Navbar = () => {
         {/* Authentication Buttons */}
         <div className="hidden md:flex items-center gap-4">
           <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
-            <Link to="/login">تسجيل دخول</Link>
+            <Link to="/login">{t('login')}</Link>
           </Button>
           <Button asChild className="bg-brand-blue hover:bg-brand-blue/90">
-            <Link to="/register">انضم الآن</Link>
+            <Link to="/register">{t('register')}</Link>
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-gray-500 p-2" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <LanguageSwitcher />
+          <button 
+            className="text-gray-500 p-2" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -112,9 +120,9 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.name === 'المواد الدراسية' && <Book size={18} className="inline ml-2" />}
-                {item.name === 'المصادر التعليمية' && <BookOpen size={18} className="inline ml-2" />}
-                {item.name === 'اتصل بنا' && <MessageSquare size={18} className="inline ml-2" />}
+                {item.name === t('subjects') && <Book size={18} className="inline ml-2" />}
+                {item.name === t('resources') && <BookOpen size={18} className="inline ml-2" />}
+                {item.name === t('contact') && <MessageSquare size={18} className="inline ml-2" />}
                 {item.name}
               </Link>
             ))}
@@ -138,10 +146,10 @@ export const Navbar = () => {
 
             <div className="flex gap-4 mt-2">
               <Button asChild variant="outline" className="flex-1 border-brand-blue text-brand-blue">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>تسجيل دخول</Link>
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>{t('login')}</Link>
               </Button>
               <Button asChild className="flex-1 bg-brand-blue hover:bg-brand-blue/90">
-                <Link to="/register" onClick={() => setIsMenuOpen(false)}>انضم الآن</Link>
+                <Link to="/register" onClick={() => setIsMenuOpen(false)}>{t('register')}</Link>
               </Button>
             </div>
           </div>

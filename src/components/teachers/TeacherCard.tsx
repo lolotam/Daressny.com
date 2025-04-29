@@ -1,49 +1,107 @@
 
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export interface TeacherCardProps {
+interface TeacherCardProps {
   id: number;
   name: string;
-  subject: string;
-  rating: number;
-  reviews: number;
-  hourlyRate: number;
-  experience: string;
   image: string;
+  subjects: string[];
+  rating: number;
+  reviewsCount: number;
+  hourlyRate: number;
+  location: string;
+  availability: string;
 }
 
-export const TeacherCard = ({ id, name, subject, rating, reviews, hourlyRate, experience, image }: TeacherCardProps) => {
+export const TeacherCard = ({
+  name,
+  image,
+  subjects,
+  rating,
+  reviewsCount,
+  hourlyRate,
+  location,
+  availability,
+}: TeacherCardProps) => {
+  const { currencySymbol } = useLanguage();
+
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
-      <div className="relative">
-        <img 
-          src={image} 
+    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
+      <div className="aspect-square overflow-hidden relative">
+        <img
+          src={image || "https://via.placeholder.com/300"}
           alt={`صورة ${name}`}
-          className="w-full h-52 object-cover" 
+          className="w-full h-full object-cover"
         />
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-          <div className="flex items-center gap-1 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.799-2.031c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </div>
+      
+      <CardContent className="pt-4">
+        <h3 className="font-bold text-xl mb-1">{name}</h3>
+        <p className="text-sm text-gray-600 mb-1">
+          {subjects.join(" • ")}
+        </p>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-4 h-4 text-yellow-500 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
             </svg>
-            <span>{rating}</span>
-            <span className="text-sm">({reviews} تقييم)</span>
+            <span className="text-sm font-medium ms-1">{rating.toFixed(1)}</span>
           </div>
+          <span className="text-sm text-gray-500">({reviewsCount} تقييم)</span>
         </div>
-      </div>
-      <div className="p-6">
-        <h3 className="font-bold text-lg mb-1">{name}</h3>
-        <p className="text-gray-600 mb-2">{subject}</p>
-        <p className="text-gray-500 mb-3 text-sm">خبرة: {experience}</p>
-        <div className="flex justify-between items-center">
-          <span className="text-brand-blue font-bold">{hourlyRate} ريال/ساعة</span>
-          <Button asChild variant="outline" size="sm">
-            <Link to={`/teachers/${id}`}>عرض الملف</Link>
-          </Button>
+        <p className="font-bold text-lg text-brand-blue">
+          {hourlyRate} {currencySymbol}/ساعة
+        </p>
+        <div className="text-sm text-gray-600 mt-2">
+          <p className="flex items-center gap-1.5">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gray-400"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            {location}
+          </p>
+          <p className="flex items-center gap-1.5 mt-1">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gray-400"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            {availability}
+          </p>
         </div>
-      </div>
+      </CardContent>
+
+      <CardFooter>
+        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90">
+          عرض الملف الشخصي
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

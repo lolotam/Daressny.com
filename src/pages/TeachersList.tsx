@@ -7,8 +7,10 @@ import { TeacherCard } from "@/components/teachers/TeacherCard";
 import { TeacherFilter } from "@/components/teachers/TeacherFilter";
 import { EmptyState } from "@/components/teachers/EmptyState";
 import { filterTeachers, getUniqueSubjects } from "@/data/teachersData";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TeachersList = () => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("all");
   const [priceSort, setPriceSort] = useState("default");
@@ -40,9 +42,9 @@ const TeachersList = () => {
       <main className="flex-grow py-12 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="mb-10">
-            <h1 className="text-3xl font-bold mb-2">المعلمين المتميزين</h1>
+            <h1 className="text-3xl font-bold mb-2">{t('teachersTitle')}</h1>
             <p className="text-gray-600">
-              اكتشف نخبة المعلمين المؤهلين في جميع المواد الدراسية
+              {t('teachersDescription')}
             </p>
           </div>
 
