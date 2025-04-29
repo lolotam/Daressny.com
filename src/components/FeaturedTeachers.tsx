@@ -77,7 +77,7 @@ export const FeaturedTeachers = () => {
                 <h3 className="font-bold text-lg mb-1">{teacher.name}</h3>
                 <p className="text-gray-600 mb-3">{teacher.subject}</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-brand-blue font-bold">{teacher.hourlyRate} ريال / ساعة</span>
+                  <div className="text-brand-blue font-bold">{teacher.hourlyRate} ريال / ساعة</div>
                   <Button asChild variant="outline" size="sm">
                     <Link to={`/teachers/${teacher.id}`}>عرض الملف</Link>
                   </Button>

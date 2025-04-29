@@ -70,17 +70,17 @@ export const TeacherCard = ({
             >
               <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
             </svg>
-            <span className="text-sm font-medium ms-1">{rating.toFixed(1)}</span>
+            <div className="text-sm font-medium ms-1">{rating.toFixed(1)}</div>
           </div>
-          <span className="text-sm text-gray-500">({reviewsCount} تقييم)</span>
+          <div className="text-sm text-gray-500">({reviewsCount} تقييم)</div>
         </div>
         
-        <p className="font-bold text-lg text-brand-blue">
+        <div className="font-bold text-lg text-brand-blue">
           {minRate === maxRate ? 
             `${minRate} ${currencySymbol}/ساعة` : 
             `${minRate}-${maxRate} ${currencySymbol}/ساعة`}
-          <span className="text-xs text-gray-500 block mt-1">حسب المرحلة الدراسية</span>
-        </p>
+          <div className="text-xs text-gray-500 mt-1">حسب المرحلة الدراسية</div>
+        </div>
         
         <div className="text-sm text-gray-600 mt-2">
           <p className="flex items-center gap-1.5">
