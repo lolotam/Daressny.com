@@ -1,16 +1,57 @@
 
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { sendEmail } from "@/utils/email";
 
 const Login = () => {
-  // Form submission handler (just for demonstration)
-  const handleSubmit = (event: React.FormEvent) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Form submission handler
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    alert("تم تسجيل الدخول بنجاح!");
+    setIsSubmitting(true);
+    
+    try {
+      // إرسال إشعار بمحاولة تسجيل الدخول
+      await sendEmail({
+        subject: "محاولة تسجيل دخول جديدة",
+        html: `
+          <h2>محاولة تسجيل دخول جديدة</h2>
+          <p><strong>البريد الإلكتروني:</strong> ${email}</p>
+          <p><strong>التاريخ والوقت:</strong> ${new Date().toLocaleString()}</p>
+        `,
+        email: email,
+        type: "login_attempt"
+      });
+      
+      // هنا سيتم إضافة المزيد من منطق المصادقة في المستقبل
+      
+      toast({
+        title: "تم تسجيل الدخول بنجاح!",
+        variant: "default",
+      });
+      
+      navigate("/");
+    } catch (error: any) {
+      console.error("Login error:", error);
+      toast({
+        title: "خطأ في تسجيل الدخول",
+        description: "يرجى التحقق من بيانات الدخول والمحاولة مرة أخرى",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -30,7 +71,13 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Label htmlFor="email">البريد الإلكتروني</Label>
-                <Input id="email" type="email" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required 
+                />
               </div>
 
               <div>
@@ -40,11 +87,21 @@ const Login = () => {
                     نسيت كلمة المرور؟
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required 
+                />
               </div>
 
-              <Button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                دخول
+              <Button 
+                type="submit" 
+                className="w-full bg-brand-blue hover:bg-brand-blue/90"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "جاري تسجيل الدخول..." : "دخول"}
               </Button>
             </form>
 

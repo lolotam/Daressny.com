@@ -10,24 +10,84 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { UserPlus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { sendEmail } from "@/utils/email";
+import { useNavigate } from "react-router-dom";
 
 const JoinTeacher = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Teacher form fields
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [education, setEducation] = useState("");
+  const [subjects, setSubjects] = useState("");
+  const [experience, setExperience] = useState("");
+  const [bio, setBio] = useState("");
+  const [availability, setAvailability] = useState("");
+  const [teachingMethod, setTeachingMethod] = useState("");
+  const [howKnow, setHowKnow] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "تم استلام طلبك بنجاح",
-        description: "سيتم التواصل معك قريباً من قبل فريق منصة درسني",
-        variant: "default",
+    try {
+      const fullName = `${firstName} ${lastName}`.trim();
+      
+      const { success, error } = await sendEmail({
+        subject: "طلب انضمام معلم جديد",
+        html: `
+          <h2>طلب انضمام معلم جديد</h2>
+          <p><strong>الاسم:</strong> ${fullName}</p>
+          <p><strong>البريد الإلكتروني:</strong> ${email}</p>
+          <p><strong>رقم الهاتف:</strong> ${phone}</p>
+          <p><strong>المؤهل العلمي:</strong> ${education}</p>
+          <p><strong>المواد التي يرغب في تدريسها:</strong> ${subjects}</p>
+          <p><strong>سنوات الخبرة:</strong> ${experience}</p>
+          <p><strong>أوقات التدريس المفضلة:</strong> ${availability}</p>
+          <p><strong>طريقة التدريس المفضلة:</strong> ${teachingMethod}</p>
+          <p><strong>كيف سمع عنا:</strong> ${howKnow}</p>
+          <h3>نبذة تعريفية:</h3>
+          <p>${bio}</p>
+        `,
+        name: fullName,
+        email: email,
+        phone: phone,
+        type: "teacher_join",
+        details: {
+          education,
+          subjects,
+          experience,
+          bio,
+          availability,
+          teachingMethod,
+          howKnow
+        }
       });
-    }, 1500);
+      
+      if (success) {
+        toast({
+          title: "تم استلام طلبك بنجاح",
+          description: "سيتم التواصل معك قريباً من قبل فريق منصة درسني",
+          variant: "default",
+        });
+        navigate("/");
+      } else {
+        throw new Error(error || "حدث خطأ أثناء إرسال الطلب");
+      }
+    } catch (error: any) {
+      toast({
+        title: "خطأ في إرسال الطلب",
+        description: error.message || "حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -58,23 +118,50 @@ const JoinTeacher = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="firstName">الاسم الأول</Label>
-                      <Input id="firstName" placeholder="أدخل الاسم الأول" required />
+                      <Input 
+                        id="firstName" 
+                        placeholder="أدخل الاسم الأول" 
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required 
+                      />
                     </div>
                     
                     <div>
                       <Label htmlFor="lastName">اسم العائلة</Label>
-                      <Input id="lastName" placeholder="أدخل اسم العائلة" required />
+                      <Input 
+                        id="lastName" 
+                        placeholder="أدخل اسم العائلة" 
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required 
+                      />
                     </div>
                   </div>
                   
                   <div>
                     <Label htmlFor="email">البريد الإلكتروني</Label>
-                    <Input id="email" type="email" placeholder="example@example.com" required />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="example@example.com" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required 
+                    />
                   </div>
                   
                   <div>
                     <Label htmlFor="phone">رقم الهاتف</Label>
-                    <Input id="phone" type="tel" placeholder="+965 XXXX XXXX" dir="ltr" required />
+                    <Input 
+                      id="phone" 
+                      type="tel" 
+                      placeholder="+965 XXXX XXXX" 
+                      dir="ltr"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required 
+                    />
                   </div>
                 </div>
                 
@@ -84,7 +171,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="education">المؤهل العلمي</Label>
-                    <Select>
+                    <Select value={education} onValueChange={setEducation}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر المؤهل العلمي" />
                       </SelectTrigger>
@@ -99,7 +186,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="subjects">المواد التي ترغب في تدريسها</Label>
-                    <Select>
+                    <Select value={subjects} onValueChange={setSubjects}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر المادة" />
                       </SelectTrigger>
@@ -118,7 +205,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="experience">سنوات الخبرة</Label>
-                    <Select>
+                    <Select value={experience} onValueChange={setExperience}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر سنوات الخبرة" />
                       </SelectTrigger>
@@ -134,7 +221,13 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="bio">نبذة تعريفية عن خبراتك في التدريس</Label>
-                    <Textarea id="bio" rows={4} placeholder="أخبرنا عن خبراتك السابقة وإنجازاتك في مجال التدريس" />
+                    <Textarea 
+                      id="bio" 
+                      rows={4} 
+                      placeholder="أخبرنا عن خبراتك السابقة وإنجازاتك في مجال التدريس"
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                    />
                   </div>
                 </div>
                 
@@ -144,7 +237,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="availability">أوقات التدريس المفضلة</Label>
-                    <Select>
+                    <Select value={availability} onValueChange={setAvailability}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر الوقت المفضل" />
                       </SelectTrigger>
@@ -160,7 +253,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="teaching_method">طريقة التدريس المفضلة</Label>
-                    <Select>
+                    <Select value={teachingMethod} onValueChange={setTeachingMethod}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر طريقة التدريس" />
                       </SelectTrigger>
@@ -174,7 +267,7 @@ const JoinTeacher = () => {
                   
                   <div>
                     <Label htmlFor="how_know">كيف سمعت عنا؟</Label>
-                    <Select>
+                    <Select value={howKnow} onValueChange={setHowKnow}>
                       <SelectTrigger>
                         <SelectValue placeholder="اختر" />
                       </SelectTrigger>
