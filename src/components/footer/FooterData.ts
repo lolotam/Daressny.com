@@ -1,6 +1,4 @@
 
-import { Language } from '@/contexts/LanguageContext';
-
 export interface FooterLink {
   name: string;
   path: string;
