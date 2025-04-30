@@ -1,18 +1,25 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Navigate } from "react-router-dom";
 import { StudentRegistrationForm } from "@/components/register/StudentRegistrationForm";
 import { TeacherRegistrationForm } from "@/components/register/TeacherRegistrationForm";
 import { RegisterHeader, RegisterFooter } from "@/components/register/RegisterHeader";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 const Register = () => {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("role") === "teacher" ? "teacher" : "student";
   const [selectedTab, setSelectedTab] = useState(initialTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
+
+  // If user is already logged in, redirect to home
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

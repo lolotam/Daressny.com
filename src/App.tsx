@@ -3,8 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { AdminRoute } from "@/components/admin/AdminRoute";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -33,37 +35,50 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
-      <TooltipProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/teachers" element={<TeachersList />} />
-            <Route path="/teachers/:id" element={<TeacherDetails />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/subjects" element={<Subjects />} />
-            <Route path="/subjects/:id" element={<SubjectDetails />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/success-stories" element={<SuccessStories />} />
-            <Route path="/share-success" element={<ShareSuccess />} />
-            <Route path="/faq" element={<TeacherFAQ />} />
-            <Route path="/teacher-development" element={<TeacherDevelopment />} />
-            <Route path="/book" element={<BookLesson />} />
-            <Route path="/join-teacher" element={<JoinTeacher />} />
-            <Route path="/my-list" element={<MyList />} />
-            <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-            <Route path="/student-dashboard" element={<StudentDashboard />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toaster />
-          <Sonner />
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/teachers" element={<TeachersList />} />
+              <Route path="/teachers/:id" element={<TeacherDetails />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/subjects" element={<Subjects />} />
+              <Route path="/subjects/:id" element={<SubjectDetails />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/success-stories" element={<SuccessStories />} />
+              <Route path="/share-success" element={<ShareSuccess />} />
+              <Route path="/faq" element={<TeacherFAQ />} />
+              <Route path="/teacher-development" element={<TeacherDevelopment />} />
+              <Route path="/book" element={<BookLesson />} />
+              <Route path="/join-teacher" element={<JoinTeacher />} />
+              <Route path="/my-list" element={<MyList />} />
+              <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+              <Route path="/student-dashboard" element={<StudentDashboard />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<Navigate to="/admin-dashboard" replace />} />
+              <Route 
+                path="/admin-dashboard" 
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                } 
+              />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toaster />
+            <Sonner />
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </LanguageProvider>
   </QueryClientProvider>
 );

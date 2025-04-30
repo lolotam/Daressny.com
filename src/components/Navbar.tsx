@@ -1,15 +1,26 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook } from 'lucide-react';
+import { Menu, X, Book, BookOpen, MessageSquare, Instagram, Facebook, LogOut, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useAuth } from '@/components/auth/AuthProvider';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { t } = useLanguage();
+  const { user, profile, isAdmin, signOut } = useAuth();
 
   // Navigation items
   const navItems = [
@@ -35,6 +46,24 @@ export const Navbar = () => {
     if (path === '/' && location.pathname === '/') return true;
     if (path !== '/' && location.pathname.startsWith(path)) return true;
     return false;
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    await signOut();
+  };
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (profile?.full_name) {
+      return profile.full_name
+        .split(' ')
+        .map(name => name[0])
+        .join('')
+        .toUpperCase()
+        .substring(0, 2);
+    }
+    return user?.email?.substring(0, 2).toUpperCase() || 'U';
   };
 
   return (
@@ -64,6 +93,18 @@ export const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {isAdmin && (
+              <Link 
+                to="/admin-dashboard" 
+                className={`font-semibold text-sm transition-colors px-3 py-2 mx-1 rounded hover:bg-gray-100 ${
+                  isActive('/admin-dashboard') 
+                    ? 'text-brand-blue font-bold' 
+                    : 'text-gray-700 hover:text-brand-blue'
+                }`}
+              >
+                لوحة التحكم
+              </Link>
+            )}
           </div>
         </div>
 
@@ -89,12 +130,48 @@ export const Navbar = () => {
 
         {/* Authentication Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-semibold">
-            <Link to="/login">{t('login')}</Link>
-          </Button>
-          <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 font-semibold">
-            <Link to="/register">{t('register')}</Link>
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>حسابي</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {profile?.is_admin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin-dashboard" className="cursor-pointer">
+                      لوحة التحكم
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem asChild>
+                  <Link to={user?.email?.includes('teacher') ? "/teacher-dashboard" : "/student-dashboard"} className="cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>الملف الشخصي</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>تسجيل الخروج</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button asChild variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-semibold">
+                <Link to="/login">{t('login')}</Link>
+              </Button>
+              <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 font-semibold">
+                <Link to="/register">{t('register')}</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -130,6 +207,20 @@ export const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            {isAdmin && (
+              <Link 
+                to="/admin-dashboard" 
+                className={`font-bold transition-colors py-2 border-b border-gray-100 ${
+                  isActive('/admin-dashboard') 
+                    ? 'text-brand-blue' 
+                    : 'text-gray-700 hover:text-brand-blue'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                لوحة التحكم
+              </Link>
+            )}
 
             {/* Social Media Icons (Mobile) */}
             <div className="flex gap-6 py-4 justify-center border-b border-gray-100">
@@ -149,13 +240,42 @@ export const Navbar = () => {
             </div>
 
             <div className="flex gap-4 mt-2">
-              <Button asChild variant="outline" className="flex-1 border-brand-blue text-brand-blue font-semibold">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>{t('login')}</Link>
-              </Button>
-              <Button asChild className="flex-1 bg-brand-blue hover:bg-brand-blue/90 font-semibold">
-                <Link to="/register" onClick={() => setIsMenuOpen(false)}>{t('register')}</Link>
-              </Button>
+              {user ? (
+                <Button onClick={handleLogout} className="flex-1 bg-red-600 hover:bg-red-700 font-semibold">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  تسجيل الخروج
+                </Button>
+              ) : (
+                <>
+                  <Button asChild variant="outline" className="flex-1 border-brand-blue text-brand-blue font-semibold">
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>{t('login')}</Link>
+                  </Button>
+                  <Button asChild className="flex-1 bg-brand-blue hover:bg-brand-blue/90 font-semibold">
+                    <Link to="/register" onClick={() => setIsMenuOpen(false)}>{t('register')}</Link>
+                  </Button>
+                </>
+              )}
             </div>
+            
+            {user && (
+              <div className="mt-4 text-center">
+                <p className="font-medium">
+                  {profile?.full_name || user.email}
+                </p>
+                <div className="flex justify-center gap-2 mt-2">
+                  <Button 
+                    asChild 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-sm"
+                  >
+                    <Link to={user.email?.includes('teacher') ? "/teacher-dashboard" : "/student-dashboard"}>
+                      الملف الشخصي
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
