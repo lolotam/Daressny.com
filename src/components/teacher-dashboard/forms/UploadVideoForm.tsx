@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FileUploader } from "../FileUploader";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
-import { CheckboxItem, CheckboxIndicator, CheckboxIcon } from "@radix-ui/react-checkbox";
 
 const videoFormSchema = z.object({
   title: z.string().min(5, { message: "عنوان الفيديو مطلوب (5 أحرف على الأقل)" }),

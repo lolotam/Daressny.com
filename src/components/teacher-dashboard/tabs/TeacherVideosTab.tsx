@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { VideoCarousel } from "../VideoCarousel";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { VideoPlus, Tag, Grid3x3, ListOrdered } from "lucide-react";
+import { Video, Tag, Grid3x3, ListOrdered } from "lucide-react";
 import { UploadVideoForm } from "../forms/UploadVideoForm";
 import { useState } from "react";
 
@@ -110,7 +110,7 @@ export const TeacherVideosTab = () => {
           <Dialog>
             <DialogTrigger asChild>
               <Button className="bg-brand-blue hover:bg-brand-blue/90">
-                <VideoPlus className="w-4 h-4 ml-2" />
+                <Video className="w-4 h-4 ml-2" />
                 رفع فيديو جديد
               </Button>
             </DialogTrigger>
