@@ -24,6 +24,8 @@ import ShareSuccess from "./pages/ShareSuccess";
 import BookLesson from "./pages/BookLesson";
 import JoinTeacher from "./pages/JoinTeacher";
 import MyList from "./pages/MyList";
+import TeacherDashboard from "./pages/TeacherDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +53,8 @@ const App = () => (
             <Route path="/book" element={<BookLesson />} />
             <Route path="/join-teacher" element={<JoinTeacher />} />
             <Route path="/my-list" element={<MyList />} />
+            <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+            <Route path="/student-dashboard" element={<StudentDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
