@@ -18,8 +18,8 @@ const Contact = () => {
       emailLabel: 'البريد الإلكتروني',
       phoneLabel: 'الهاتف / واتساب',
       addressLabel: 'العنوان',
-      email: 'info@daressny.com',
-      phone: '96560685150',
+      emailAddress: 'info@daressny.com',
+      phoneNumber: '96560685150',
       address: 'الكويت - السالمية',
       socialMedia: 'تابعنا على وسائل التواصل الاجتماعي',
       supportTeam: 'تواصل مع فريق الدعم',
@@ -46,8 +46,8 @@ const Contact = () => {
       emailLabel: 'Email Address',
       phoneLabel: 'Phone / WhatsApp',
       addressLabel: 'Address',
-      email: 'info@daressny.com',
-      phone: '96560685150',
+      emailAddress: 'info@daressny.com',
+      phoneNumber: '96560685150',
       address: 'Kuwait - Salmiya',
       socialMedia: 'Follow Us On Social Media',
       supportTeam: 'Contact Support Team',
@@ -84,8 +84,8 @@ const Contact = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Contact Information */}
             <ContactInfoCard 
-              email={currentTranslation.email}
-              phone={currentTranslation.phone}
+              email={currentTranslation.emailAddress}
+              phone={currentTranslation.phoneNumber}
               address={currentTranslation.address}
               labels={{
                 contactInfo: currentTranslation.contactInfo,
