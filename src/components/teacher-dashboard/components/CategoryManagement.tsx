@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface CategoryManagementProps {
   categories: string[];
@@ -65,6 +66,3 @@ const Input = ({ className = "", ...props }) => (
     {...props}
   />
 );
-
-// Re-export Button to avoid importing it in multiple places
-export { Button } from "@/components/ui/button";
