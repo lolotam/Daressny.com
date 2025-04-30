@@ -45,7 +45,7 @@ export const Footer = () => {
       platformName: 'منصة درسني',
       slogan: 'مع درسني، مستقبلك بين يديك.',
       email: 'info@daressny.com',
-      phone: '+96555683677',
+      phone: '+96560685150',
       address: 'الكويت - السالمية',
       supportTeam: 'تواصل مع فريق الدعم',
       bookSession: 'احجز جلسة تدريبية الآن',
@@ -58,7 +58,7 @@ export const Footer = () => {
       platformName: 'Darsni Platform',
       slogan: 'With Darsni, your future is in your hands.',
       email: 'info@daressny.com',
-      phone: '+96555683677',
+      phone: '+96560685150',
       address: 'Kuwait - Salmiya',
       supportTeam: 'Contact Support Team',
       bookSession: 'Book a Training Session Now',
@@ -167,7 +167,7 @@ export const Footer = () => {
               </p>
               <p className="flex items-center gap-2 mb-3">
                 <Phone className="h-5 w-5 text-brand-blue" />
-                <a href="tel:+96555683677" dir="ltr" className="hover:text-brand-blue transition-colors">
+                <a href="tel:+96560685150" dir="ltr" className="hover:text-brand-blue transition-colors">
                   {currentInfo.phone}
                 </a>
               </p>

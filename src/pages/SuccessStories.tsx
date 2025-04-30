@@ -1,10 +1,11 @@
-
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Star, Quote, Award, TrendingUp } from 'lucide-react';
 
 // Success stories data
@@ -208,9 +209,11 @@ export default function SuccessStories() {
             <p className="mb-6 opacity-90 max-w-2xl mx-auto">
               نحن فخورون بنجاحات طلابنا ومعلمينا. شارك قصة نجاحك معنا وقد تظهر هنا قريبًا!
             </p>
-            <button className="bg-white text-brand-blue hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
-              شارك قصة نجاحك
-            </button>
+            <Button asChild className="bg-white text-brand-blue hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
+              <Link to="/share-success">
+                شارك قصة نجاحك
+              </Link>
+            </Button>
           </div>
         </div>
       </main>
