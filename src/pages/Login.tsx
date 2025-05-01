@@ -51,11 +51,15 @@ const Login = () => {
     } catch (error: any) {
       let errorMessage = "حدث خطأ أثناء تسجيل الدخول";
       
-      // Handle different error messages
+      // تحسين رسائل الخطأ لتكون أكثر تحديداً
       if (error.message.includes("Invalid login credentials")) {
         errorMessage = "بريد إلكتروني أو كلمة مرور غير صحيحة";
       } else if (error.message.includes("Email not confirmed")) {
         errorMessage = "لم يتم تأكيد البريد الإلكتروني بعد. يرجى التحقق من بريدك الوارد";
+      } else {
+        // عرض رسالة الخطأ الأصلية للتشخيص
+        console.error("Login error details:", error);
+        errorMessage = `خطأ في تسجيل الدخول: ${error.message}`;
       }
       
       toast({

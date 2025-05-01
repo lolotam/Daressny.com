@@ -36,10 +36,14 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
   const [studentLessonType, setStudentLessonType] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Form submission handler for student registration
   const handleStudentSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    // Reset error message
+    setErrorMessage("");
     
     // Validate passwords
     if (password !== confirmPassword) {
@@ -68,25 +72,33 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
       
       if (error) throw error;
       
-      // Store additional profile information
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          phone_number: studentPhone,
-          full_name: studentName
-        })
-        .eq('id', data.user?.id);
-        
-      if (profileError) throw profileError;
-      
-      // Send verification email
-      await supabase.functions.invoke("send-verification-email", {
-        body: { 
-          email: studentEmail,
-          name: studentName,
-          token: data.user?.id
+      // إذا نجح إنشاء الحساب، نحاول إضافة المعلومات الإضافية
+      if (data.user) {
+        try {
+          // Store additional profile information
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              phone_number: studentPhone,
+              full_name: studentName
+            })
+            .eq('id', data.user.id);
+            
+          if (profileError) console.error("Profile update error:", profileError);
+            
+          // Send verification email
+          await supabase.functions.invoke("send-verification-email", {
+            body: { 
+              email: studentEmail,
+              name: studentName,
+              token: data.user.id
+            }
+          });
+        } catch (profileErr) {
+          console.error("Error updating profile:", profileErr);
+          // نستمر لأن الحساب تم إنشاؤه بنجاح على أي حال
         }
-      });
+      }
       
       toast({
         title: "تم التسجيل بنجاح",
@@ -99,10 +111,17 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
       
       let errorMessage = "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى";
       
-      if (error.message.includes("already registered")) {
-        errorMessage = "البريد الإلكتروني مسجل بالفعل";
+      if (error.message.includes("already registered") || error.message.includes("duplicate key value")) {
+        errorMessage = "البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر أو تسجيل الدخول.";
+      } else if (error.message.includes("weak")) {
+        errorMessage = "كلمة المرور ضعيفة جدا. يرجى اختيار كلمة مرور أقوى.";
+      } else {
+        // عرض رسالة الخطأ الأصلية للتشخيص
+        console.error("Registration error details:", error);
+        errorMessage = `خطأ في التسجيل: ${error.message}`;
       }
       
+      setErrorMessage(errorMessage);
       toast({
         title: "خطأ في التسجيل",
         description: errorMessage,
@@ -115,6 +134,12 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
 
   return (
     <form onSubmit={handleStudentSubmit} className="space-y-6">
+      {errorMessage && (
+        <div className="p-3 border border-red-300 bg-red-50 text-red-800 rounded">
+          {errorMessage}
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 gap-6">
         <div>
           <Label htmlFor="student-name">الاسم الكامل</Label>

@@ -39,10 +39,14 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
   const [teacherBio, setTeacherBio] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Form submission handler for teacher registration
   const handleTeacherSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    // Reset error message
+    setErrorMessage("");
     
     // Validate passwords
     if (password !== confirmPassword) {
@@ -71,52 +75,65 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
       
       if (error) throw error;
       
-      // Store additional profile information
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          phone_number: teacherPhone,
-          full_name: teacherName
-        })
-        .eq('id', data.user?.id);
-        
-      if (profileError) throw profileError;
-      
-      // Send verification email
-      await supabase.functions.invoke("send-verification-email", {
-        body: { 
-          email: teacherEmail,
-          name: teacherName,
-          token: data.user?.id
+      // إذا نجح إنشاء الحساب، نحاول إضافة المعلومات الإضافية
+      if (data.user) {
+        try {
+          // Store additional profile information
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              phone_number: teacherPhone,
+              full_name: teacherName
+            })
+            .eq('id', data.user.id);
+            
+          if (profileError) console.error("Profile update error:", profileError);
+            
+          // Send verification email
+          await supabase.functions.invoke("send-verification-email", {
+            body: { 
+              email: teacherEmail,
+              name: teacherName,
+              token: data.user.id
+            }
+          });
+        } catch (profileErr) {
+          console.error("Error updating profile:", profileErr);
+          // نستمر لأن الحساب تم إنشاؤه بنجاح على أي حال
         }
-      });
       
-      // Send additional teacher info to admin
-      await supabase.functions.invoke("send-email", {
-        body: {
-          subject: "طلب انضمام معلم جديد",
-          html: `
-            <h2>طلب انضمام معلم جديد</h2>
-            <p><strong>الاسم:</strong> ${teacherName}</p>
-            <p><strong>البريد الإلكتروني:</strong> ${teacherEmail}</p>
-            <p><strong>رقم الهاتف:</strong> ${teacherPhone}</p>
-            <p><strong>المواد التي يدرسها:</strong> ${teacherSubjects}</p>
-            <p><strong>الشهادات والمؤهلات:</strong> ${teacherEducation}</p>
-            <p><strong>سنوات الخبرة:</strong> ${teacherExperience}</p>
-            <p><strong>نبذة تعريفية:</strong> ${teacherBio}</p>
-          `,
-          name: teacherName,
-          email: teacherEmail,
-          phone: teacherPhone,
-          type: "teacher",
-          details: {
-            subjects: teacherSubjects,
-            education: teacherEducation,
-            experience: teacherExperience,
-            bio: teacherBio
-          }
+        // Send additional teacher info to admin
+        try {
+          await supabase.functions.invoke("send-email", {
+            body: {
+              subject: "طلب انضمام معلم جديد",
+              html: `
+                <h2>طلب انضمام معلم جديد</h2>
+                <p><strong>الاسم:</strong> ${teacherName}</p>
+                <p><strong>البريد الإلكتروني:</strong> ${teacherEmail}</p>
+                <p><strong>رقم الهاتف:</strong> ${teacherPhone}</p>
+                <p><strong>المواد التي يدرسها:</strong> ${teacherSubjects}</p>
+                <p><strong>الشهادات والمؤهلات:</strong> ${teacherEducation}</p>
+                <p><strong>سنوات الخبرة:</strong> ${teacherExperience}</p>
+                <p><strong>نبذة تعريفية:</strong> ${teacherBio}</p>
+              `,
+              name: teacherName,
+              email: teacherEmail,
+              phone: teacherPhone,
+              type: "teacher",
+              details: {
+                subjects: teacherSubjects,
+                education: teacherEducation,
+                experience: teacherExperience,
+                bio: teacherBio
+              }
+            }
+          });
+        } catch (emailErr) {
+          console.error("Error sending admin notification:", emailErr);
+          // نستمر لأن الحساب تم إنشاؤه بنجاح على أي حال
         }
-      });
+      }
       
       toast({
         title: "تم التسجيل بنجاح",
@@ -129,10 +146,17 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
       
       let errorMessage = "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى";
       
-      if (error.message.includes("already registered")) {
-        errorMessage = "البريد الإلكتروني مسجل بالفعل";
+      if (error.message.includes("already registered") || error.message.includes("duplicate key value")) {
+        errorMessage = "البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر أو تسجيل الدخول.";
+      } else if (error.message.includes("weak")) {
+        errorMessage = "كلمة المرور ضعيفة جدا. يرجى اختيار كلمة مرور أقوى.";
+      } else {
+        // عرض رسالة الخطأ الأصلية للتشخيص
+        console.error("Registration error details:", error);
+        errorMessage = `خطأ في التسجيل: ${error.message}`;
       }
       
+      setErrorMessage(errorMessage);
       toast({
         title: "خطأ في التسجيل",
         description: errorMessage,
@@ -145,6 +169,12 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
 
   return (
     <form onSubmit={handleTeacherSubmit} className="space-y-6">
+      {errorMessage && (
+        <div className="p-3 border border-red-300 bg-red-50 text-red-800 rounded">
+          {errorMessage}
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 gap-6">
         <div>
           <Label htmlFor="teacher-name">الاسم الكامل</Label>
