@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
 import TeachersList from "./pages/TeachersList";
 import TeacherDetails from "./pages/TeacherDetails";
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="/about" element={<About />} />
               <Route path="/teachers" element={<TeachersList />} />
               <Route path="/teachers/:id" element={<TeacherDetails />} />

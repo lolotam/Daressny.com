@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { sendEmail } from "@/utils/email";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 export type TeacherFormData = {
   name: string;
@@ -17,6 +17,7 @@ export type TeacherFormData = {
   education: string;
   experience: string;
   bio: string;
+  password: string;
 };
 
 type TeacherRegistrationFormProps = {
@@ -36,51 +37,105 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
   const [teacherEducation, setTeacherEducation] = useState("");
   const [teacherExperience, setTeacherExperience] = useState("");
   const [teacherBio, setTeacherBio] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Form submission handler for teacher registration
   const handleTeacherSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    // Validate passwords
+    if (password !== confirmPassword) {
+      toast({
+        title: "خطأ في التسجيل",
+        description: "كلمتا المرور غير متطابقتين",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
-      const { success, error } = await sendEmail({
-        subject: "تسجيل معلم جديد",
-        html: `
-          <h2>بيانات المعلم الجديد</h2>
-          <p><strong>الاسم:</strong> ${teacherName}</p>
-          <p><strong>البريد الإلكتروني:</strong> ${teacherEmail}</p>
-          <p><strong>رقم الهاتف:</strong> ${teacherPhone}</p>
-          <p><strong>المواد التي يدرسها:</strong> ${teacherSubjects}</p>
-          <p><strong>الشهادات والمؤهلات:</strong> ${teacherEducation}</p>
-          <p><strong>سنوات الخبرة:</strong> ${teacherExperience}</p>
-          <p><strong>نبذة تعريفية:</strong> ${teacherBio}</p>
-        `,
-        name: teacherName,
+      // Register user with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
         email: teacherEmail,
-        phone: teacherPhone,
-        type: "teacher",
-        details: {
-          subjects: teacherSubjects,
-          education: teacherEducation,
-          experience: teacherExperience,
-          bio: teacherBio
+        password: password,
+        options: {
+          data: {
+            full_name: teacherName,
+            user_type: 'teacher'
+          }
         }
       });
       
-      if (success) {
-        toast({
-          title: "تم التسجيل بنجاح",
-          description: "شكراً لتسجيلك! سيتم التواصل معك قريباً",
-          variant: "default",
-        });
-        navigate("/");
-      } else {
-        throw new Error(error || "حدث خطأ أثناء التسجيل");
-      }
+      if (error) throw error;
+      
+      // Store additional profile information
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          phone_number: teacherPhone,
+          full_name: teacherName
+        })
+        .eq('id', data.user?.id);
+        
+      if (profileError) throw profileError;
+      
+      // Send verification email
+      await supabase.functions.invoke("send-verification-email", {
+        body: { 
+          email: teacherEmail,
+          name: teacherName,
+          token: data.user?.id
+        }
+      });
+      
+      // Send additional teacher info to admin
+      await supabase.functions.invoke("send-email", {
+        body: {
+          subject: "طلب انضمام معلم جديد",
+          html: `
+            <h2>طلب انضمام معلم جديد</h2>
+            <p><strong>الاسم:</strong> ${teacherName}</p>
+            <p><strong>البريد الإلكتروني:</strong> ${teacherEmail}</p>
+            <p><strong>رقم الهاتف:</strong> ${teacherPhone}</p>
+            <p><strong>المواد التي يدرسها:</strong> ${teacherSubjects}</p>
+            <p><strong>الشهادات والمؤهلات:</strong> ${teacherEducation}</p>
+            <p><strong>سنوات الخبرة:</strong> ${teacherExperience}</p>
+            <p><strong>نبذة تعريفية:</strong> ${teacherBio}</p>
+          `,
+          name: teacherName,
+          email: teacherEmail,
+          phone: teacherPhone,
+          type: "teacher",
+          details: {
+            subjects: teacherSubjects,
+            education: teacherEducation,
+            experience: teacherExperience,
+            bio: teacherBio
+          }
+        }
+      });
+      
+      toast({
+        title: "تم التسجيل بنجاح",
+        description: "تم إرسال رسالة تأكيد إلى بريدك الإلكتروني. يرجى التحقق من بريدك لإكمال عملية التسجيل.",
+      });
+      
+      navigate("/login");
     } catch (error: any) {
+      console.error("Error in teacher registration:", error);
+      
+      let errorMessage = "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى";
+      
+      if (error.message.includes("already registered")) {
+        errorMessage = "البريد الإلكتروني مسجل بالفعل";
+      }
+      
       toast({
         title: "خطأ في التسجيل",
-        description: error.message || "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -177,6 +232,30 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
             value={teacherBio} 
             onChange={(e) => setTeacherBio(e.target.value)} 
             required 
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="teacher-password">كلمة المرور</Label>
+          <Input 
+            id="teacher-password" 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            minLength={8}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="teacher-confirm-password">تأكيد كلمة المرور</Label>
+          <Input 
+            id="teacher-confirm-password" 
+            type="password" 
+            value={confirmPassword} 
+            onChange={(e) => setConfirmPassword(e.target.value)} 
+            required 
+            minLength={8}
           />
         </div>
       </div>

@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { sendEmail } from "@/utils/email";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 export type StudentFormData = {
   name: string;
@@ -15,6 +15,7 @@ export type StudentFormData = {
   grade: string;
   subject: string;
   lessonType: string;
+  password: string;
 };
 
 type StudentRegistrationFormProps = {
@@ -33,49 +34,78 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
   const [studentGrade, setStudentGrade] = useState("");
   const [studentSubject, setStudentSubject] = useState("");
   const [studentLessonType, setStudentLessonType] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Form submission handler for student registration
   const handleStudentSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    // Validate passwords
+    if (password !== confirmPassword) {
+      toast({
+        title: "خطأ في التسجيل",
+        description: "كلمتا المرور غير متطابقتين",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
-      const { success, error } = await sendEmail({
-        subject: "تسجيل طالب جديد",
-        html: `
-          <h2>بيانات الطالب الجديد</h2>
-          <p><strong>الاسم:</strong> ${studentName}</p>
-          <p><strong>البريد الإلكتروني:</strong> ${studentEmail}</p>
-          <p><strong>رقم الهاتف:</strong> ${studentPhone}</p>
-          <p><strong>الصف الدراسي:</strong> ${studentGrade}</p>
-          <p><strong>المادة المطلوبة:</strong> ${studentSubject}</p>
-          <p><strong>نوع الدرس:</strong> ${studentLessonType}</p>
-        `,
-        name: studentName,
+      // Register user with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
         email: studentEmail,
-        phone: studentPhone,
-        type: "student",
-        details: {
-          grade: studentGrade,
-          subject: studentSubject,
-          lessonType: studentLessonType
+        password: password,
+        options: {
+          data: {
+            full_name: studentName,
+            user_type: 'student'
+          }
         }
       });
       
-      if (success) {
-        toast({
-          title: "تم التسجيل بنجاح",
-          description: "شكراً لتسجيلك! سيتم التواصل معك قريباً",
-          variant: "default",
-        });
-        navigate("/");
-      } else {
-        throw new Error(error || "حدث خطأ أثناء التسجيل");
-      }
+      if (error) throw error;
+      
+      // Store additional profile information
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          phone_number: studentPhone,
+          full_name: studentName
+        })
+        .eq('id', data.user?.id);
+        
+      if (profileError) throw profileError;
+      
+      // Send verification email
+      await supabase.functions.invoke("send-verification-email", {
+        body: { 
+          email: studentEmail,
+          name: studentName,
+          token: data.user?.id
+        }
+      });
+      
+      toast({
+        title: "تم التسجيل بنجاح",
+        description: "تم إرسال رسالة تأكيد إلى بريدك الإلكتروني. يرجى التحقق من بريدك لإكمال عملية التسجيل.",
+      });
+      
+      navigate("/login");
     } catch (error: any) {
+      console.error("Error in student registration:", error);
+      
+      let errorMessage = "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى";
+      
+      if (error.message.includes("already registered")) {
+        errorMessage = "البريد الإلكتروني مسجل بالفعل";
+      }
+      
       toast({
         title: "خطأ في التسجيل",
-        description: error.message || "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -174,6 +204,30 @@ export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: Stude
               <SelectItem value="group">دروس مجموعات</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="student-password">كلمة المرور</Label>
+          <Input 
+            id="student-password" 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            minLength={8}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="student-confirm-password">تأكيد كلمة المرور</Label>
+          <Input 
+            id="student-confirm-password" 
+            type="password" 
+            value={confirmPassword} 
+            onChange={(e) => setConfirmPassword(e.target.value)} 
+            required 
+            minLength={8}
+          />
         </div>
       </div>
 
