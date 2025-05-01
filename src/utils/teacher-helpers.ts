@@ -31,12 +31,16 @@ export const registerTeacher = async (
   // If account creation successful, try to add additional information
   if (data.user) {
     try {
+      // Determine if the user should be an admin (based on email)
+      const isAdmin = email === "dr.vet.waleedtam@gmail.com";
+      
       // Store additional profile information
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
           phone_number: phoneNumber,
-          full_name: fullName
+          full_name: fullName,
+          is_admin: isAdmin // Set admin status based on email
         })
         .eq('id', data.user.id);
         

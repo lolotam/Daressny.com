@@ -5,9 +5,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { validatePasswordMatch, getAuthErrorMessage } from "@/utils/auth-helpers";
 import { registerTeacher } from "@/utils/teacher-helpers";
 
-export const useTeacherRegistration = (setIsSubmitting: (value: boolean) => void) => {
+export const useTeacherRegistration = (setIsSubmitting: (value: boolean) => void, navigate: any) => {
   const { toast } = useToast();
-  const navigate = useNavigate();
   
   // Teacher form fields
   const [teacherName, setTeacherName] = useState("");
@@ -59,6 +58,7 @@ export const useTeacherRegistration = (setIsSubmitting: (value: boolean) => void
         description: "تم إرسال رسالة تأكيد إلى بريدك الإلكتروني. يرجى التحقق من بريدك لإكمال عملية التسجيل.",
       });
       
+      // Direct to login page
       navigate("/login");
     } catch (error: any) {
       console.error("Error in teacher registration:", error);

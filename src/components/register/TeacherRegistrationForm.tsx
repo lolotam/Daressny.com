@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useTeacherRegistration } from "@/hooks/useTeacherRegistration";
 import { TeacherFormFields } from "./teacher-form/TeacherFormFields";
 import { ErrorMessage } from "./student-form/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 type TeacherRegistrationFormProps = {
   isSubmitting: boolean;
@@ -10,6 +11,8 @@ type TeacherRegistrationFormProps = {
 };
 
 export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: TeacherRegistrationFormProps) => {
+  const navigate = useNavigate();
+  
   const {
     teacherName,
     setTeacherName,
@@ -31,7 +34,7 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
     setConfirmPassword,
     errorMessage,
     handleTeacherSubmit
-  } = useTeacherRegistration(setIsSubmitting);
+  } = useTeacherRegistration(setIsSubmitting, navigate);
 
   return (
     <form onSubmit={handleTeacherSubmit} className="space-y-6">
