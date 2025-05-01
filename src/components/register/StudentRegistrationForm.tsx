@@ -1,12 +1,8 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useStudentRegistration } from "@/hooks/useStudentRegistration";
+import { StudentFormFields } from "./student-form/StudentFormFields";
+import { ErrorMessage } from "./student-form/ErrorMessage";
 
 export type StudentFormData = {
   name: string;
@@ -24,237 +20,49 @@ type StudentRegistrationFormProps = {
 };
 
 export const StudentRegistrationForm = ({ isSubmitting, setIsSubmitting }: StudentRegistrationFormProps) => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  
-  // Student form fields
-  const [studentName, setStudentName] = useState("");
-  const [studentEmail, setStudentEmail] = useState("");
-  const [studentPhone, setStudentPhone] = useState("");
-  const [studentGrade, setStudentGrade] = useState("");
-  const [studentSubject, setStudentSubject] = useState("");
-  const [studentLessonType, setStudentLessonType] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  // Form submission handler for student registration
-  const handleStudentSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    
-    // Reset error message
-    setErrorMessage("");
-    
-    // Validate passwords
-    if (password !== confirmPassword) {
-      toast({
-        title: "خطأ في التسجيل",
-        description: "كلمتا المرور غير متطابقتين",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    try {
-      // Register user with Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email: studentEmail,
-        password: password,
-        options: {
-          data: {
-            full_name: studentName,
-            user_type: 'student'
-          }
-        }
-      });
-      
-      if (error) throw error;
-      
-      // إذا نجح إنشاء الحساب، نحاول إضافة المعلومات الإضافية
-      if (data.user) {
-        try {
-          // Store additional profile information
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .update({
-              phone_number: studentPhone,
-              full_name: studentName
-            })
-            .eq('id', data.user.id);
-            
-          if (profileError) console.error("Profile update error:", profileError);
-            
-          // Send verification email
-          await supabase.functions.invoke("send-verification-email", {
-            body: { 
-              email: studentEmail,
-              name: studentName,
-              token: data.user.id
-            }
-          });
-        } catch (profileErr) {
-          console.error("Error updating profile:", profileErr);
-          // نستمر لأن الحساب تم إنشاؤه بنجاح على أي حال
-        }
-      }
-      
-      toast({
-        title: "تم التسجيل بنجاح",
-        description: "تم إرسال رسالة تأكيد إلى بريدك الإلكتروني. يرجى التحقق من بريدك لإكمال عملية التسجيل.",
-      });
-      
-      navigate("/login");
-    } catch (error: any) {
-      console.error("Error in student registration:", error);
-      
-      let errorMessage = "حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى";
-      
-      if (error.message.includes("already registered") || error.message.includes("duplicate key value")) {
-        errorMessage = "البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر أو تسجيل الدخول.";
-      } else if (error.message.includes("weak")) {
-        errorMessage = "كلمة المرور ضعيفة جدا. يرجى اختيار كلمة مرور أقوى.";
-      } else {
-        // عرض رسالة الخطأ الأصلية للتشخيص
-        console.error("Registration error details:", error);
-        errorMessage = `خطأ في التسجيل: ${error.message}`;
-      }
-      
-      setErrorMessage(errorMessage);
-      toast({
-        title: "خطأ في التسجيل",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const {
+    studentName,
+    setStudentName,
+    studentEmail,
+    setStudentEmail,
+    studentPhone,
+    setStudentPhone,
+    studentGrade,
+    setStudentGrade,
+    studentSubject,
+    setStudentSubject,
+    studentLessonType,
+    setStudentLessonType,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    errorMessage,
+    handleStudentSubmit
+  } = useStudentRegistration(setIsSubmitting);
 
   return (
     <form onSubmit={handleStudentSubmit} className="space-y-6">
-      {errorMessage && (
-        <div className="p-3 border border-red-300 bg-red-50 text-red-800 rounded">
-          {errorMessage}
-        </div>
-      )}
+      <ErrorMessage message={errorMessage} />
       
-      <div className="grid grid-cols-1 gap-6">
-        <div>
-          <Label htmlFor="student-name">الاسم الكامل</Label>
-          <Input 
-            id="student-name" 
-            value={studentName} 
-            onChange={(e) => setStudentName(e.target.value)} 
-            required 
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="student-email">البريد الإلكتروني</Label>
-          <Input 
-            id="student-email" 
-            type="email" 
-            value={studentEmail} 
-            onChange={(e) => setStudentEmail(e.target.value)} 
-            required 
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="student-phone">رقم الهاتف</Label>
-          <Input 
-            id="student-phone" 
-            type="tel" 
-            dir="ltr" 
-            value={studentPhone} 
-            onChange={(e) => setStudentPhone(e.target.value)} 
-            required 
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="student-grade">الصف الدراسي</Label>
-          <Select value={studentGrade} onValueChange={setStudentGrade}>
-            <SelectTrigger>
-              <SelectValue placeholder="اختر الصف الدراسي" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="primary-1">الصف الأول الابتدائي</SelectItem>
-              <SelectItem value="primary-2">الصف الثاني الابتدائي</SelectItem>
-              <SelectItem value="primary-3">الصف الثالث الابتدائي</SelectItem>
-              <SelectItem value="primary-4">الصف الرابع الابتدائي</SelectItem>
-              <SelectItem value="primary-5">الصف الخامس الابتدائي</SelectItem>
-              <SelectItem value="primary-6">الصف السادس الابتدائي</SelectItem>
-              <SelectItem value="middle-1">الصف الأول المتوسط</SelectItem>
-              <SelectItem value="middle-2">الصف الثاني المتوسط</SelectItem>
-              <SelectItem value="middle-3">الصف الثالث المتوسط</SelectItem>
-              <SelectItem value="high-1">الصف الأول الثانوي</SelectItem>
-              <SelectItem value="high-2">الصف الثاني الثانوي</SelectItem>
-              <SelectItem value="high-3">الصف الثالث الثانوي</SelectItem>
-              <SelectItem value="university">المرحلة الجامعية</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="student-subjects">المواد المطلوبة</Label>
-          <Select value={studentSubject} onValueChange={setStudentSubject}>
-            <SelectTrigger>
-              <SelectValue placeholder="اختر المادة" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="math">الرياضيات</SelectItem>
-              <SelectItem value="science">العلوم</SelectItem>
-              <SelectItem value="physics">الفيزياء</SelectItem>
-              <SelectItem value="chemistry">الكيمياء</SelectItem>
-              <SelectItem value="biology">الأحياء</SelectItem>
-              <SelectItem value="arabic">اللغة العربية</SelectItem>
-              <SelectItem value="english">اللغة الإنجليزية</SelectItem>
-              <SelectItem value="computer">الحاسب الآلي</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="student-lesson-type">نوع الدرس</Label>
-          <Select value={studentLessonType} onValueChange={setStudentLessonType}>
-            <SelectTrigger>
-              <SelectValue placeholder="اختر نوع الدرس" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="home">دروس في المنزل</SelectItem>
-              <SelectItem value="online">دروس أونلاين</SelectItem>
-              <SelectItem value="group">دروس مجموعات</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="student-password">كلمة المرور</Label>
-          <Input 
-            id="student-password" 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-            minLength={8}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="student-confirm-password">تأكيد كلمة المرور</Label>
-          <Input 
-            id="student-confirm-password" 
-            type="password" 
-            value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
-            required 
-            minLength={8}
-          />
-        </div>
-      </div>
+      <StudentFormFields
+        studentName={studentName}
+        setStudentName={setStudentName}
+        studentEmail={studentEmail}
+        setStudentEmail={setStudentEmail}
+        studentPhone={studentPhone}
+        setStudentPhone={setStudentPhone}
+        studentGrade={studentGrade}
+        setStudentGrade={setStudentGrade}
+        studentSubject={studentSubject}
+        setStudentSubject={setStudentSubject}
+        studentLessonType={studentLessonType}
+        setStudentLessonType={setStudentLessonType}
+        password={password}
+        setPassword={setPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
+      />
 
       <Button 
         type="submit" 
