@@ -8,25 +8,27 @@ import { StudentStoriesGrid } from '@/components/success-stories/StudentStoriesG
 import { TeacherStoriesGrid } from '@/components/success-stories/TeacherStoriesGrid';
 import { StoriesCallToAction } from '@/components/success-stories/StoriesCallToAction';
 import { studentStories, teacherStories } from '@/components/success-stories/storiesData';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function SuccessStories() {
   const [activeTab, setActiveTab] = useState("students");
+  const { t } = useLanguage();
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-gray-50">
         <SuccessStoriesHeader 
-          title="قصص نجاح"
-          description="تعرّف على قصص نجاح حقيقية لطلاب ومعلمين حققوا نتائج استثنائية مع منصة درسني"
+          title={t('successStoriesTitle')}
+          description={t('successStoriesDescription')}
         />
 
         <div className="container mx-auto max-w-6xl py-12 px-6">
           <Tabs defaultValue="students" onValueChange={setActiveTab} className="mb-8">
             <div className="flex justify-center mb-10">
               <TabsList className="bg-white">
-                <TabsTrigger value="students" className="px-8 py-3">قصص نجاح الطلاب</TabsTrigger>
-                <TabsTrigger value="teachers" className="px-8 py-3">قصص نجاح المعلمين</TabsTrigger>
+                <TabsTrigger value="students" className="px-8 py-3">{t('studentStoriesTab')}</TabsTrigger>
+                <TabsTrigger value="teachers" className="px-8 py-3">{t('teacherStoriesTab')}</TabsTrigger>
               </TabsList>
             </div>
             
@@ -40,9 +42,9 @@ export default function SuccessStories() {
           </Tabs>
           
           <StoriesCallToAction 
-            title="هل لديك قصة نجاح مع درسني؟"
-            description="نحن فخورون بنجاحات طلابنا ومعلمينا. شارك قصة نجاحك معنا وقد تظهر هنا قريبًا!"
-            buttonText="شارك قصة نجاحك"
+            title={t('haveSuccessStory')}
+            description={t('proudOfSuccesses')}
+            buttonText={t('shareYourStory')}
             buttonLink="/share-success"
           />
         </div>

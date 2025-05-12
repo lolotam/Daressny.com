@@ -7,6 +7,8 @@ interface FormHeaderProps {
 }
 
 export const FormHeader = ({ title, description }: FormHeaderProps) => {
+  const { language } = useLanguage();
+  
   return (
     <div className="text-center mb-8">
       <h1 className="text-3xl font-bold mb-4">{title}</h1>
