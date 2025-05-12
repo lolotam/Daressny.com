@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
 
 const BookLesson = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -16,17 +16,23 @@ const BookLesson = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="mb-10 text-center">
-              <h1 className="text-3xl font-bold mb-4">حجز درس تعليمي</h1>
+              <h1 className="text-3xl font-bold mb-4">
+                {language === 'ar' ? 'حجز درس تعليمي' : 'Book a Lesson'}
+              </h1>
               <div className="flex justify-center">
                 <BookOpen className="h-12 w-12 text-brand-blue mb-4" />
               </div>
               <p className="text-gray-600 text-lg">
-                اختر المعلم والمادة والوقت المناسب لك وابدأ رحلتك التعليمية
+                {language === 'ar' 
+                  ? 'اختر المعلم والمادة والوقت المناسب لك وابدأ رحلتك التعليمية'
+                  : 'Select a teacher, subject, and suitable time for your educational journey'}
               </p>
             </div>
 
             <div className="bg-white p-8 rounded-lg shadow-sm mb-8">
-              <h2 className="text-2xl font-semibold mb-6">طريقة حجز درس</h2>
+              <h2 className="text-2xl font-semibold mb-6">
+                {language === 'ar' ? 'طريقة حجز درس' : 'How to Book a Lesson'}
+              </h2>
               
               <ol className="space-y-6">
                 <li className="flex items-start">
@@ -34,8 +40,14 @@ const BookLesson = () => {
                     1
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium mb-2">اختر المادة الدراسية</h3>
-                    <p className="text-gray-600">حدد المادة الدراسية التي ترغب في دراستها من قائمة المواد المتاحة</p>
+                    <h3 className="text-lg font-medium mb-2">
+                      {language === 'ar' ? 'اختر المادة الدراسية' : 'Choose a Subject'}
+                    </h3>
+                    <p className="text-gray-600">
+                      {language === 'ar' 
+                        ? 'حدد المادة الدراسية التي ترغب في دراستها من قائمة المواد المتاحة'
+                        : 'Select the subject you want to study from the list of available subjects'}
+                    </p>
                   </div>
                 </li>
                 
@@ -44,8 +56,14 @@ const BookLesson = () => {
                     2
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium mb-2">اختر المعلم المناسب</h3>
-                    <p className="text-gray-600">استعرض قائمة المعلمين المتخصصين في المادة واختر المعلم الذي يناسب احتياجاتك</p>
+                    <h3 className="text-lg font-medium mb-2">
+                      {language === 'ar' ? 'اختر المعلم المناسب' : 'Select a Suitable Teacher'}
+                    </h3>
+                    <p className="text-gray-600">
+                      {language === 'ar'
+                        ? 'استعرض قائمة المعلمين المتخصصين في المادة واختر المعلم الذي يناسب احتياجاتك'
+                        : 'Browse the list of specialized teachers and choose the one that meets your needs'}
+                    </p>
                   </div>
                 </li>
                 
@@ -54,8 +72,14 @@ const BookLesson = () => {
                     3
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium mb-2">حدد موعد الدرس</h3>
-                    <p className="text-gray-600">اختر الوقت والتاريخ المناسب لك من جدول المواعيد المتاحة للمعلم</p>
+                    <h3 className="text-lg font-medium mb-2">
+                      {language === 'ar' ? 'حدد موعد الدرس' : 'Set the Lesson Time'}
+                    </h3>
+                    <p className="text-gray-600">
+                      {language === 'ar'
+                        ? 'اختر الوقت والتاريخ المناسب لك من جدول المواعيد المتاحة للمعلم'
+                        : 'Choose a suitable time and date from the teacher\'s available schedule'}
+                    </p>
                   </div>
                 </li>
                 
@@ -64,8 +88,14 @@ const BookLesson = () => {
                     4
                   </div>
                   <div>
-                    <h3 className="text-lg font-medium mb-2">قم بالدفع وتأكيد الحجز</h3>
-                    <p className="text-gray-600">أكمل عملية الدفع بالطريقة المناسبة لك وانتظر تأكيد الحجز</p>
+                    <h3 className="text-lg font-medium mb-2">
+                      {language === 'ar' ? 'قم بالدفع وتأكيد الحجز' : 'Make Payment and Confirm Booking'}
+                    </h3>
+                    <p className="text-gray-600">
+                      {language === 'ar'
+                        ? 'أكمل عملية الدفع بالطريقة المناسبة لك وانتظر تأكيد الحجز'
+                        : 'Complete the payment process and wait for booking confirmation'}
+                    </p>
                   </div>
                 </li>
               </ol>
@@ -73,11 +103,15 @@ const BookLesson = () => {
             
             <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
               <Button asChild size="lg" className="bg-brand-blue hover:bg-brand-blue/90">
-                <Link to="/subjects">تصفح المواد الدراسية</Link>
+                <Link to="/subjects">
+                  {language === 'ar' ? 'تصفح المواد الدراسية' : 'Browse Subjects'}
+                </Link>
               </Button>
               
               <Button asChild size="lg" variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
-                <Link to="/teachers">تصفح المعلمين</Link>
+                <Link to="/teachers">
+                  {language === 'ar' ? 'تصفح المعلمين' : 'Browse Teachers'}
+                </Link>
               </Button>
             </div>
           </div>

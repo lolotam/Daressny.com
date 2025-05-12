@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const TeacherDashboardHeader = () => {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   
   // Mock teacher data - in a real app this would come from API/context
   const teacher = {
-    name: "د. أحمد محمد",
-    title: "أستاذ الرياضيات",
+    name: language === 'ar' ? "د. أحمد محمد" : "Dr. Ahmed Mohammed",
+    title: language === 'ar' ? "أستاذ الرياضيات" : "Mathematics Professor",
     avatar: "/lovable-uploads/8246e1ab-4316-4ed8-adf6-175b7d9717f6.png",
     rating: 4.9,
     reviewsCount: 124,
@@ -37,14 +37,16 @@ export const TeacherDashboardHeader = () => {
                   </svg>
                   <span className="font-semibold mx-1">{teacher.rating}</span>
                 </div>
-                <span className="text-sm text-gray-500">({teacher.reviewsCount} تقييم)</span>
+                <span className="text-sm text-gray-500">
+                  ({teacher.reviewsCount} {language === 'ar' ? 'تقييم' : 'reviews'})
+                </span>
                 
                 {teacher.verified && (
                   <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full flex items-center">
                     <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                     </svg>
-                    حساب موثق
+                    {language === 'ar' ? 'حساب موثق' : 'Verified Account'}
                   </span>
                 )}
               </div>
@@ -52,10 +54,10 @@ export const TeacherDashboardHeader = () => {
             
             <div className="flex gap-3 justify-center md:justify-end">
               <Button variant="outline" className="border-brand-blue text-brand-blue">
-                تعديل الملف الشخصي
+                {language === 'ar' ? 'تعديل الملف الشخصي' : 'Edit Profile'}
               </Button>
               <Button className="bg-brand-blue hover:bg-brand-blue/90">
-                إضافة محتوى جديد
+                {language === 'ar' ? 'إضافة محتوى جديد' : 'Add New Content'}
               </Button>
             </div>
           </div>

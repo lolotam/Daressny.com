@@ -5,6 +5,7 @@ import { StudentSessionsTab } from "./tabs/StudentSessionsTab";
 import { StudentCoursesTab } from "./tabs/StudentCoursesTab";
 import { StudentTeachersTab } from "./tabs/StudentTeachersTab";
 import { StudentParentControlTab } from "./tabs/StudentParentControlTab";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StudentDashboardTabsProps {
   activeTab: string;
@@ -15,6 +16,8 @@ export const StudentDashboardTabs = ({
   activeTab, 
   setActiveTab 
 }: StudentDashboardTabsProps) => {
+  const { language } = useLanguage();
+  
   return (
     <Tabs 
       defaultValue="profile" 
@@ -24,19 +27,19 @@ export const StudentDashboardTabs = ({
     >
       <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
         <TabsTrigger value="profile" className="text-sm md:text-base font-semibold">
-          الملف الشخصي
+          {language === 'ar' ? 'الملف الشخصي' : 'Profile'}
         </TabsTrigger>
         <TabsTrigger value="sessions" className="text-sm md:text-base font-semibold">
-          الحصص الدراسية
+          {language === 'ar' ? 'الحصص الدراسية' : 'Sessions'}
         </TabsTrigger>
         <TabsTrigger value="courses" className="text-sm md:text-base font-semibold">
-          الكورسات
+          {language === 'ar' ? 'الكورسات' : 'Courses'}
         </TabsTrigger>
         <TabsTrigger value="teachers" className="text-sm md:text-base font-semibold">
-          المعلمين
+          {language === 'ar' ? 'المعلمين' : 'Teachers'}
         </TabsTrigger>
         <TabsTrigger value="parent" className="text-sm md:text-base font-semibold">
-          التحكم الأبوي
+          {language === 'ar' ? 'التحكم الأبوي' : 'Parental Control'}
         </TabsTrigger>
       </TabsList>
 

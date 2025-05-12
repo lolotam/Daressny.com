@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const StudentDashboardHeader = () => {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   
   // Mock student data - in a real app this would come from API/context
   const student = {
-    name: "محمد علي",
-    grade: "الصف الحادي عشر - علمي",
+    name: language === 'ar' ? "محمد علي" : "Mohammed Ali",
+    grade: language === 'ar' ? "الصف الحادي عشر - علمي" : "11th Grade - Science",
     avatar: "/lovable-uploads/829da1c5-f204-48e2-b7c8-da3464cee845.png",
     activeCourses: 3,
     completedCourses: 5
@@ -32,21 +32,25 @@ export const StudentDashboardHeader = () => {
               <div className="flex justify-center md:justify-start gap-4 mb-4">
                 <div className="text-center">
                   <span className="block text-2xl font-bold text-brand-blue">{student.activeCourses}</span>
-                  <span className="text-sm text-gray-500">كورسات نشطة</span>
+                  <span className="text-sm text-gray-500">
+                    {language === 'ar' ? 'كورسات نشطة' : 'Active Courses'}
+                  </span>
                 </div>
                 <div className="text-center">
                   <span className="block text-2xl font-bold text-green-600">{student.completedCourses}</span>
-                  <span className="text-sm text-gray-500">كورسات مكتملة</span>
+                  <span className="text-sm text-gray-500">
+                    {language === 'ar' ? 'كورسات مكتملة' : 'Completed Courses'}
+                  </span>
                 </div>
               </div>
             </div>
             
             <div className="flex gap-3 justify-center md:justify-end">
               <Button variant="outline" className="border-brand-blue text-brand-blue">
-                تعديل الملف الشخصي
+                {language === 'ar' ? 'تعديل الملف الشخصي' : 'Edit Profile'}
               </Button>
               <Button className="bg-brand-blue hover:bg-brand-blue/90">
-                تصفح المدرسين
+                {language === 'ar' ? 'تصفح المدرسين' : 'Browse Teachers'}
               </Button>
             </div>
           </div>
