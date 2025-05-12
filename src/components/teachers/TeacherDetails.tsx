@@ -1,5 +1,6 @@
 
 import React from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface TeacherDetailsProps {
   location: string;
@@ -7,6 +8,8 @@ interface TeacherDetailsProps {
 }
 
 export const TeacherDetails = ({ location, availability }: TeacherDetailsProps) => {
+  const { language } = useLanguage();
+  
   return (
     <div className="text-sm text-gray-600">
       <p className="flex items-center gap-1.5">

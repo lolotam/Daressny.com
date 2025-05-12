@@ -18,17 +18,61 @@ const TeacherDetails = () => {
   
   // Sample reviews data
   const reviews = [
-    { id: 1, name: "أحمد محمد", date: "2024-03-15", rating: 5, comment: "معلم رائع! شرح المفاهيم المعقدة بطريقة بسيطة وسهلة الفهم." },
-    { id: 2, name: "سارة علي", date: "2024-02-28", rating: 4, comment: "استفدت كثيراً من شرحه وأسلوبه التعليمي. أنصح بشدة بالدراسة معه." },
-    { id: 3, name: "فهد العمري", date: "2024-01-10", rating: 5, comment: "ممتاز جداً، ساعدني في تحسين مستواي بشكل ملحوظ خلال فترة قصيرة." }
+    { 
+      id: 1, 
+      name: language === 'ar' ? "أحمد محمد" : "Ahmed Mohamed", 
+      date: "2024-03-15", 
+      rating: 5, 
+      comment: language === 'ar' 
+        ? "معلم رائع! شرح المفاهيم المعقدة بطريقة بسيطة وسهلة الفهم."
+        : "Great teacher! Explained complex concepts in a simple and easy to understand way."
+    },
+    { 
+      id: 2, 
+      name: language === 'ar' ? "سارة علي" : "Sarah Ali", 
+      date: "2024-02-28", 
+      rating: 4, 
+      comment: language === 'ar' 
+        ? "استفدت كثيراً من شرحه وأسلوبه التعليمي. أنصح بشدة بالدراسة معه."
+        : "I benefited a lot from his explanation and teaching style. I highly recommend studying with him." 
+    },
+    { 
+      id: 3, 
+      name: language === 'ar' ? "فهد العمري" : "Fahad Al-Amri", 
+      date: "2024-01-10", 
+      rating: 5, 
+      comment: language === 'ar' 
+        ? "ممتاز جداً، ساعدني في تحسين مستواي بشكل ملحوظ خلال فترة قصيرة."
+        : "Excellent, helped me improve my level significantly in a short period of time." 
+    }
   ];
   
   // Available times
   const availableTimes = [
-    { day: "السبت", times: ["3:00 م - 4:00 م", "4:00 م - 5:00 م", "5:00 م - 6:00 م"] },
-    { day: "الأحد", times: ["4:00 م - 5:00 م", "5:00 م - 6:00 م", "6:00 م - 7:00 م"] },
-    { day: "الاثنين", times: ["3:00 م - 4:00 م", "4:00 م - 5:00 م"] },
-    { day: "الأربعاء", times: ["5:00 م - 6:00 م", "6:00 م - 7:00 م", "7:00 م - 8:00 م"] }
+    { 
+      day: language === 'ar' ? "السبت" : "Saturday", 
+      times: language === 'ar' 
+        ? ["3:00 م - 4:00 م", "4:00 م - 5:00 م", "5:00 م - 6:00 م"] 
+        : ["3:00 PM - 4:00 PM", "4:00 PM - 5:00 PM", "5:00 PM - 6:00 PM"] 
+    },
+    { 
+      day: language === 'ar' ? "الأحد" : "Sunday", 
+      times: language === 'ar' 
+        ? ["4:00 م - 5:00 م", "5:00 م - 6:00 م", "6:00 م - 7:00 م"]
+        : ["4:00 PM - 5:00 PM", "5:00 PM - 6:00 PM", "6:00 PM - 7:00 PM"]
+    },
+    { 
+      day: language === 'ar' ? "الاثنين" : "Monday", 
+      times: language === 'ar' 
+        ? ["3:00 م - 4:00 م", "4:00 م - 5:00 م"]
+        : ["3:00 PM - 4:00 PM", "4:00 PM - 5:00 PM"]
+    },
+    { 
+      day: language === 'ar' ? "الأربعاء" : "Wednesday", 
+      times: language === 'ar' 
+        ? ["5:00 م - 6:00 م", "6:00 م - 7:00 م", "7:00 م - 8:00 م"]
+        : ["5:00 PM - 6:00 PM", "6:00 PM - 7:00 PM", "7:00 PM - 8:00 PM"]
+    }
   ];
   
   useEffect(() => {
@@ -46,9 +90,13 @@ const TeacherDetails = () => {
         <Navbar />
         <main className="flex-grow flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">المعلم غير موجود</h1>
+            <h1 className="text-2xl font-bold mb-4">
+              {language === 'ar' ? "المعلم غير موجود" : "Teacher not found"}
+            </h1>
             <Button asChild>
-              <Link to="/teachers">العودة إلى قائمة المعلمين</Link>
+              <Link to="/teachers">
+                {language === 'ar' ? "العودة إلى قائمة المعلمين" : "Return to teachers list"}
+              </Link>
             </Button>
           </div>
         </main>
@@ -213,7 +261,9 @@ const TeacherDetails = () => {
                       {language === 'ar' ? 'نبذة عن المعلم' : 'About the Teacher'}
                     </h2>
                     <p className="text-gray-700">
-                      {teacher.bio || 'معلم متميز ذو خبرة عالية في تدريس ' + teacher.subject + '. يتميز بأسلوب شرح مبسط وقدرة على إيصال المعلومات بطريقة سهلة وممتعة.'}
+                      {teacher.bio || (language === 'ar' 
+                        ? 'معلم متميز ذو خبرة عالية في تدريس ' + teacher.subject + '. يتميز بأسلوب شرح مبسط وقدرة على إيصال المعلومات بطريقة سهلة وممتعة.' 
+                        : 'Distinguished teacher with high experience in teaching ' + teacher.subject + '. Characterized by a simplified explanation style and the ability to deliver information in an easy and enjoyable way.')}
                     </p>
                   </div>
 
@@ -289,7 +339,7 @@ const TeacherDetails = () => {
                         <li key={timeIdx} className="flex justify-between items-center p-2 hover:bg-gray-100 rounded">
                           <span>{time}</span>
                           <Button size="sm" variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
-                            حجز
+                            {language === 'ar' ? 'حجز' : 'Book'}
                           </Button>
                         </li>
                       ))}
@@ -309,7 +359,7 @@ const TeacherDetails = () => {
                 {language === 'ar' ? 'تقييمات الطلاب' : 'Student Reviews'}
               </h2>
               <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
-                <MessageSquare size={18} className="mr-2" />
+                <MessageSquare size={18} className={language === 'ar' ? 'ml-2' : 'mr-2'} />
                 {language === 'ar' ? 'أضف تقييمك' : 'Add Review'}
               </Button>
             </div>
