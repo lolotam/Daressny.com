@@ -53,12 +53,62 @@ const translations = {
     'bookTraining': 'احجز جلسة تدريبية',
     'moreQuestionsDesc': 'إذا لم تجد إجابة لسؤالك، يمكنك التواصل مع فريق دعم المعلمين لدينا. نحن هنا لمساعدتك!',
     
+    // Home page
+    'heroTitle': 'مع منصة درسني النجاح أصبح أسهل وأقرب إليك!',
+    'heroDescription': 'منصة درسني هي منصتك الأولى لحجز الدروس الخصوصية سواء بالمنزل أو أونلاين مع نخبة من أفضل المعلمين في جميع المواد الدراسية والمراحل التعليمية.',
+    'registerStudent': 'سجل كطالب',
+    'registerTeacher': 'سجل كمعلم',
+    'ctaTitle': 'انضم إلينا الآن واحصل على تجربة تعليمية متميزة',
+    'ctaDescription': 'سواء كنت طالبًا تبحث عن معلم متميز أو معلمًا تريد توسيع نطاق تدريسك، منصة درسني هي وجهتك الأمثل',
+    
+    // Registration page
+    'joinPlatform': 'انضم إلى منصة درسني',
+    'startJourney': 'سجل الآن وابدأ رحلتك التعليمية المتميزة!',
+    'alreadyHaveAccount': 'لديك حساب بالفعل؟',
+    'loginHere': 'تسجيل الدخول',
+    'createTeacherAccount': 'إنشاء حساب معلم',
+    'registering': 'جاري التسجيل...',
+    
+    // Join Teacher page
+    'joinTeacherTeam': 'انضم إلى فريق معلمي منصة درسني',
+    'teachOpportunity': 'انضم إلينا واستفد من فرصة تدريس آلاف الطلاب في مختلف المراحل التعليمية',
+    'fillFormBelow': 'أكمل النموذج أدناه وسنتواصل معك في أقرب وقت',
+    
+    // Subjects page
+    'educationalStage': 'المرحلة الدراسية',
+    'chooseStage': 'اختر المرحلة الدراسية',
+    'studyMethod': 'طريقة الدراسة',
+    'chooseMethod': 'اختر طريقة الدراسة',
+    'search': 'البحث',
+    'searchSubject': 'ابحث عن مادة دراسية...',
+    'levels': 'المراحل',
+    'teaching': 'الدراسة',
+    'viewTeachers': 'عرض المعلمين',
+    'noSubjectsFound': 'لم يتم العثور على مواد دراسية',
+    'changeSearchCriteria': 'جرب تغيير معايير البحث أو الفلترة للعثور على المادة المطلوبة.',
+    'resetFilters': 'إعادة ضبط الفلترة',
+    
+    // Success stories page
+    'shareStory': 'شارك قصتك',
+    'shareExperience': 'شارك تجربتك مع منصة درسني لتلهم الآخرين',
+    
     // Currency
     'currency': 'د.ك',
     
     // Language switcher
     'switchToEnglish': 'English',
     'switchToArabic': 'العربية',
+
+    // Admin Dashboard
+    'adminDashboard': 'لوحة تحكم المشرف',
+    'overview': 'نظرة عامة',
+    'users': 'المستخدمين',
+    'teachers': 'المعلمين',
+    'bookings': 'الحجوزات',
+    'content': 'المحتوى',
+    'financial': 'التقارير المالية',
+    'permissions': 'الصلاحيات',
+    'settings': 'الإعدادات',
   },
   en: {
     // Navbar
@@ -100,12 +150,62 @@ const translations = {
     'bookTraining': 'Book a Training Session',
     'moreQuestionsDesc': 'If you did not find an answer to your question, you can contact our teacher support team. We are here to help!',
     
+    // Home page
+    'heroTitle': 'With Darsni Platform success is easier and closer to you!',
+    'heroDescription': 'Darsni platform is your first platform for booking private lessons either at home or online with an elite group of the best teachers in all subjects and educational stages.',
+    'registerStudent': 'Register as Student',
+    'registerTeacher': 'Register as Teacher',
+    'ctaTitle': 'Join us now and get a distinguished educational experience',
+    'ctaDescription': 'Whether you are a student looking for an outstanding teacher or a teacher wanting to expand your teaching, Darsni platform is your ideal destination',
+    
+    // Registration page
+    'joinPlatform': 'Join Darsni Platform',
+    'startJourney': 'Register now and start your distinguished educational journey!',
+    'alreadyHaveAccount': 'Already have an account?',
+    'loginHere': 'Log in',
+    'createTeacherAccount': 'Create Teacher Account',
+    'registering': 'Registering...',
+    
+    // Join Teacher page
+    'joinTeacherTeam': 'Join the Darsni Platform Teaching Team',
+    'teachOpportunity': 'Join us and benefit from the opportunity to teach thousands of students in various educational stages',
+    'fillFormBelow': 'Complete the form below and we will contact you as soon as possible',
+    
+    // Subjects page
+    'educationalStage': 'Educational Stage',
+    'chooseStage': 'Choose educational stage',
+    'studyMethod': 'Study Method',
+    'chooseMethod': 'Choose study method',
+    'search': 'Search',
+    'searchSubject': 'Search for a subject...',
+    'levels': 'Levels',
+    'teaching': 'Teaching',
+    'viewTeachers': 'View Teachers',
+    'noSubjectsFound': 'No subjects found',
+    'changeSearchCriteria': 'Try changing your search or filter criteria to find the subject you are looking for.',
+    'resetFilters': 'Reset Filters',
+    
+    // Success stories page
+    'shareStory': 'Share Your Story',
+    'shareExperience': 'Share your experience with Darsni platform to inspire others',
+    
     // Currency
     'currency': 'KWD',
     
     // Language switcher
     'switchToEnglish': 'English',
     'switchToArabic': 'العربية',
+
+    // Admin Dashboard
+    'adminDashboard': 'Admin Dashboard',
+    'overview': 'Overview',
+    'users': 'Users',
+    'teachers': 'Teachers',
+    'bookings': 'Bookings',
+    'content': 'Content',
+    'financial': 'Financial Reports',
+    'permissions': 'Permissions',
+    'settings': 'Settings',
   },
 };
 

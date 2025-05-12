@@ -4,6 +4,7 @@ import { useTeacherRegistration } from "@/hooks/useTeacherRegistration";
 import { TeacherFormFields } from "./teacher-form/TeacherFormFields";
 import { ErrorMessage } from "./student-form/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type TeacherRegistrationFormProps = {
   isSubmitting: boolean;
@@ -12,6 +13,7 @@ type TeacherRegistrationFormProps = {
 
 export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: TeacherRegistrationFormProps) => {
   const navigate = useNavigate();
+  const { language } = useLanguage();
   
   const {
     teacherName,
@@ -66,7 +68,10 @@ export const TeacherRegistrationForm = ({ isSubmitting, setIsSubmitting }: Teach
         className="w-full bg-brand-blue hover:bg-brand-blue/90"
         disabled={isSubmitting}
       >
-        {isSubmitting ? "جاري التسجيل..." : "إنشاء حساب معلم"}
+        {isSubmitting ? 
+          (language === 'ar' ? "جاري التسجيل..." : "Registering...") : 
+          (language === 'ar' ? "إنشاء حساب معلم" : "Create Teacher Account")
+        }
       </Button>
     </form>
   );

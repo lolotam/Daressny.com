@@ -1,4 +1,6 @@
 
+import { useLanguage } from '@/contexts/LanguageContext';
+
 interface FormHeaderProps {
   title: string;
   description: string;
