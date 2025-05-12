@@ -34,10 +34,10 @@ export const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Button asChild className="text-lg px-8 py-6 bg-brand-blue hover:bg-brand-blue/90">
+              <Button asChild size="lg" className="text-lg px-8 py-6 bg-brand-blue hover:bg-brand-blue/90">
                 <Link to="/register?role=student">سجل كطالب</Link>
               </Button>
-              <Button asChild variant="outline" className="text-lg px-8 py-6 border-brand-blue text-brand-blue hover:bg-brand-blue/10">
+              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 border-brand-blue text-brand-blue hover:bg-brand-blue/10">
                 <Link to="/register?role=teacher">سجل كمعلم</Link>
               </Button>
             </div>
