@@ -18,10 +18,15 @@ const ResetPassword = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Check if the access token exists in the URL
+  // Check if the access token exists in the URL hash
   useEffect(() => {
     const checkAccessToken = async () => {
+      // Get hash fragment from URL - this contains the recovery token
       const hash = window.location.hash;
+      
+      // Debug what we're receiving
+      console.log("URL hash:", hash);
+      
       if (!hash || !hash.includes("access_token")) {
         setIsValidToken(false);
         toast({
@@ -29,6 +34,13 @@ const ResetPassword = () => {
           description: "رابط إعادة تعيين كلمة المرور غير صالح أو منتهي الصلاحية",
           variant: "destructive",
         });
+      } else {
+        // Hash contains the token, we're good to proceed
+        setIsValidToken(true);
+        console.log("Valid token found in URL");
+        
+        // The Supabase client will automatically handle the token from the URL hash
+        // No need to manually extract and set it
       }
     };
 
@@ -50,6 +62,7 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
+      // The Supabase client will automatically use the token from the URL
       const { error } = await supabase.auth.updateUser({
         password: password
       });
