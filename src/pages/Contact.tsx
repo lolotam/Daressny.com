@@ -12,27 +12,34 @@ const Contact = () => {
   
   const currentTranslation = language === 'ar' ? contactTranslations.ar : contactTranslations.en;
 
+  // Sample data for the contact page - in a real app, this would come from a configuration or API
+  const contactInfo = {
+    email: 'support@daressny.com',
+    phone: '+965 5555 5555',
+    address: 'Kuwait City, Kuwait'
+  };
+
   return (
     <ContactLayout>
       <ContactHeader 
-        title={currentTranslation.title}
-        description={currentTranslation.description}
+        title={currentTranslation.contactTitle}
+        description={currentTranslation.contactDescription}
       />
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Contact Information */}
         <ContactInfoCard 
-          email={currentTranslation.emailAddress}
-          phone={currentTranslation.phoneNumber}
-          address={currentTranslation.address}
+          email={contactInfo.email}
+          phone={contactInfo.phone}
+          address={contactInfo.address}
           labels={{
-            contactInfo: currentTranslation.contactInfo,
-            emailLabel: currentTranslation.emailLabel,
-            phoneLabel: currentTranslation.phoneLabel,
-            addressLabel: currentTranslation.addressLabel,
-            socialMedia: currentTranslation.socialMedia,
-            supportTeam: currentTranslation.supportTeam,
-            bookSession: currentTranslation.bookSession,
+            contactInfo: currentTranslation.contactUsToday,
+            emailLabel: currentTranslation.emailContact,
+            phoneLabel: currentTranslation.phoneContact,
+            addressLabel: currentTranslation.visitUs,
+            socialMedia: "Social Media",
+            supportTeam: "Contact Support Team",
+            bookSession: "Book a Session"
           }}
         />
         
@@ -44,15 +51,15 @@ const Contact = () => {
             email: currentTranslation.email,
             phone: currentTranslation.phone,
             message: currentTranslation.message,
-            optional: currentTranslation.optional,
+            optional: "Optional",
             sending: currentTranslation.sending,
-            send: currentTranslation.send,
-            nameInputPlaceholder: currentTranslation.nameInputPlaceholder,
-            emailInputPlaceholder: currentTranslation.emailInputPlaceholder,
-            phoneInputPlaceholder: currentTranslation.phoneInputPlaceholder,
-            messageInputPlaceholder: currentTranslation.messageInputPlaceholder,
-            successTitle: currentTranslation.successTitle,
-            successDescription: currentTranslation.successDescription,
+            send: currentTranslation.sendNow,
+            nameInputPlaceholder: currentTranslation.fullName,
+            emailInputPlaceholder: currentTranslation.email,
+            phoneInputPlaceholder: currentTranslation.phone,
+            messageInputPlaceholder: currentTranslation.message,
+            successTitle: currentTranslation.messageSent,
+            successDescription: currentTranslation.messageSent
           }}
         />
       </div>

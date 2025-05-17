@@ -24,6 +24,10 @@ export const contactTranslations = {
     'billing': 'الفواتير والمدفوعات',
     'partnership': 'الشراكات والتعاون',
     'other': 'أخرى',
+    'socialMedia': 'وسائل التواصل الاجتماعي',
+    'supportTeam': 'التواصل مع فريق الدعم',
+    'bookSession': 'حجز جلسة',
+    'optional': 'اختياري'
   },
   en: {
     // Contact page
@@ -49,5 +53,9 @@ export const contactTranslations = {
     'billing': 'Billing & Payments',
     'partnership': 'Partnership & Collaboration',
     'other': 'Other',
+    'socialMedia': 'Social Media',
+    'supportTeam': 'Contact Support Team',
+    'bookSession': 'Book a Session',
+    'optional': 'Optional'
   }
 };
